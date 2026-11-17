@@ -3,723 +3,679 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multi-Asset Regime & Horizont Kompass · v1.5 Beta</title>
+  <title>Multi-Asset Regime & Horizont Kompass · v2.0</title>
   <script src="live_data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
     :root {
-      --bg: #080c14;
-      --panel: #101724;
-      --panel-alt: #141d2e;
-      --border: #1e2a3f;
-      --border-strong: #2e4060;
-      --text: #eaf0fa;
+      --bg: #070b12;
+      --panel: #0f1623;
+      --panel-hover: #151f31;
+      --border: #1d293e;
+      --border-strong: #2e4163;
+      --text: #eef3fb;
       --muted: #8a9bb5;
       --accent: #3b82f6;
       --green: #10b981;
-      --green-soft: rgba(16, 185, 129, 0.14);
+      --green-soft: rgba(16, 185, 129, 0.16);
       --yellow: #f59e0b;
-      --yellow-soft: rgba(245, 158, 11, 0.14);
+      --yellow-soft: rgba(245, 158, 11, 0.16);
       --red: #ef4444;
-      --red-soft: rgba(239, 68, 68, 0.14);
+      --red-soft: rgba(239, 68, 68, 0.16);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at 50% 18%, #111b2e 0%, var(--bg) 65%);
+      background: radial-gradient(circle at 50% 15%, #111c30 0%, var(--bg) 68%);
       color: var(--text);
-      line-height: 1.5;
-      padding: 20px 16px 48px;
+      line-height: 1.45;
+      padding: 14px 12px 44px;
       min-height: 100vh;
     }
-    .container { max-width: 1260px; margin: 0 auto; }
+    .container { max-width: 1120px; margin: 0 auto; }
 
-    /* Demo Banner */
-    .demo-banner {
-      background: rgba(59, 130, 246, 0.12);
-      border: 1px solid rgba(59, 130, 246, 0.35);
-      border-radius: 11px;
-      padding: 9px 14px;
-      margin-bottom: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.82rem;
-      color: #dbeafe;
-    }
-    .demo-banner button {
-      background: #1e3a8a;
-      color: #fff;
-      border: 1px solid #3b82f6;
-      border-radius: 7px;
-      padding: 4px 10px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .demo-banner button:hover { background: var(--accent); }
-
-    /* Top Bar */
+    /* Compact Header */
     header {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-      padding-bottom: 14px;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
     }
-    .brand h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
-    .brand .sub { font-size: 0.8rem; color: var(--muted); }
+    .brand h1 { font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
+    .brand .sub { font-size: 0.75rem; color: var(--muted); }
     .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
     .status-pill {
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       background: var(--panel);
       border: 1px solid var(--border);
       color: #93c5fd;
-      padding: 6px 11px;
+      padding: 5px 10px;
       border-radius: 999px;
     }
-
-    /* Dynamic Benchmark Selector & Outperformance Pill */
-    .bm-box {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 0.76rem;
-      color: var(--muted);
-    }
-    .bm-box select {
-      background: transparent;
-      color: var(--text);
-      border: none;
-      font-weight: 700;
-      font-size: 0.76rem;
-      cursor: pointer;
-      outline: none;
-    }
-    .bm-box select option { background: #101724; color: #eaf0fa; }
-    .bm-ahead {
-      background: var(--green-soft);
-      color: var(--green);
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 0.74rem;
-      display: none;
-    }
-
     .btn-action {
       background: var(--accent);
       color: #fff;
       border: none;
       border-radius: 9px;
-      padding: 7px 14px;
-      font-size: 0.82rem;
+      padding: 7px 12px;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
-      transition: filter 0.15s ease;
     }
-    .btn-action:hover { filter: brightness(1.12); }
     .btn-ghost {
       background: var(--panel);
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 9px;
-      padding: 7px 12px;
-      font-size: 0.82rem;
+      padding: 6px 11px;
+      font-size: 0.78rem;
       font-weight: 600;
       cursor: pointer;
     }
     .btn-ghost:hover { border-color: var(--border-strong); }
 
-    /* Portfolio Summary Strip */
-    .pf-strip {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    @media (max-width: 780px) { .pf-strip { grid-template-columns: repeat(2, 1fr); } }
-    .pf-kpi {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 9px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.82rem;
-    }
-    .pf-kpi span:first-child { color: var(--muted); }
-    .pf-kpi strong { font-size: 0.9rem; color: var(--text); }
-
-    /* Error Banner */
+    /* Error / Demo Banner */
     .error-box {
       background: var(--red-soft);
       border: 1px solid var(--red);
-      padding: 14px 16px;
-      border-radius: 12px;
-      margin-bottom: 18px;
-      font-size: 0.9rem;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      font-size: 0.84rem;
       display: none;
     }
 
-    /* Controls */
-    .controls {
+    /* Compact Selector Bar */
+    .selector-bar {
       display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      gap: 12px;
-      margin-bottom: 18px;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
     }
-    @media (max-width: 780px) { .controls { grid-template-columns: 1fr; } }
-    .control-box {
+    @media (max-width: 760px) { .selector-bar { grid-template-columns: 1fr; gap: 8px; } }
+    .sel-box {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 11px 14px;
+      border-radius: 11px;
+      padding: 8px 10px;
     }
-    .control-label {
-      display: block;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      margin-bottom: 7px;
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
     }
-    .pill-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    @media (max-width: 600px) {
+      .pill-row.scroll-mobile {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 2px;
+        scrollbar-width: none;
+      }
+      .pill-row.scroll-mobile::-webkit-scrollbar { display: none; }
+    }
     .pill {
-      background: #172133;
+      background: #162032;
       color: var(--muted);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 11px;
-      font-size: 0.83rem;
+      border-radius: 7px;
+      padding: 5px 10px;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-    .pill:hover { color: var(--text); border-color: var(--border-strong); }
     .pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* HUB-AND-SPOKE GRID */
-    .hub-grid {
+    /* COMPACT HUB + 4 MINI SATELLITES */
+    .cockpit {
       display: grid;
-      grid-template-columns: 1fr 1.35fr 1fr;
-      gap: 16px;
-      align-items: stretch;
+      grid-template-columns: 240px 1fr 240px;
+      gap: 14px;
+      align-items: center;
     }
-    @media (max-width: 1040px) {
-      .hub-grid { grid-template-columns: 1fr; }
-      .hub-center { order: -1; }
+    @media (max-width: 960px) {
+      .cockpit {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .hub-core {
+        grid-column: 1 / -1;
+        order: -1;
+      }
+      .sat-stack {
+        display: contents;
+      }
     }
-    .spoke-col { display: flex; flex-direction: column; gap: 16px; }
+    .sat-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-    /* Satellite Cards */
-    .sat-card {
+    /* Mini Satellite Card (Tap to Open) */
+    .mini-sat {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 16px 18px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      padding: 13px 14px;
+      cursor: pointer;
+      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+      position: relative;
+      text-align: left;
+      width: 100%;
+      color: var(--text);
     }
-    .sat-header {
+    .mini-sat:hover {
+      background: var(--panel-hover);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+    .mini-sat.highlight-bull { border-color: rgba(16, 185, 129, 0.55); box-shadow: 0 0 18px rgba(16, 185, 129, 0.12); }
+    .mini-sat.highlight-bear { border-color: rgba(239, 68, 68, 0.45); }
+
+    .mini-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 6px;
     }
-    .sat-title {
-      font-size: 0.78rem;
+    .mini-label {
+      font-size: 0.71rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #cbd5e1;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .sat-tag {
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .mini-open-hint {
       font-size: 0.72rem;
+      color: #64748b;
       font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      white-space: nowrap;
     }
-    .kv-list { display: flex; flex-direction: column; gap: 7px; font-size: 0.84rem; }
-    .kv-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-    .kv-label { color: var(--muted); }
-    .kv-val { font-weight: 700; color: var(--text); text-align: right; }
-    .sat-note {
-      margin-top: 10px;
-      padding-top: 8px;
-      border-top: 1px dashed var(--border);
-      font-size: 0.77rem;
+    .mini-main-val {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+    .mini-sub-val {
+      font-size: 0.75rem;
       color: #9fb0c9;
     }
 
-    /* Center Hub */
-    .hub-center {
-      background: linear-gradient(160deg, #131d31 0%, #0d1422 100%);
+    /* CENTER HUB CORE */
+    .hub-core {
+      background: linear-gradient(165deg, #131e33 0%, #0b111e 100%);
       border: 1px solid var(--border-strong);
-      border-radius: 18px;
-      padding: 22px 22px 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+      border-radius: 20px;
+      padding: 18px 18px 14px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      text-align: center;
     }
-    .hub-top { text-align: center; }
-    .hub-meta { font-size: 0.88rem; color: var(--muted); font-weight: 600; }
-    .hub-price { font-size: 0.85rem; color: #93c5fd; margin-top: 2px; font-weight: 700; }
-    .score-ring { margin: 10px auto 6px; display: inline-flex; align-items: baseline; justify-content: center; }
-    .score-num { font-size: 4.6rem; font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
-    .score-denom { font-size: 1.35rem; color: var(--muted); font-weight: 600; margin-left: 4px; }
-    .regime-pill {
+    .hub-asset-title {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+    .hub-price-tag {
+      font-size: 0.78rem;
+      color: #93c5fd;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .score-hero {
+      margin: 6px auto 4px;
+      display: inline-flex;
+      align-items: baseline;
+    }
+    .score-big {
+      font-size: 4.1rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .score-of {
+      font-size: 1.15rem;
+      color: var(--muted);
+      font-weight: 700;
+      margin-left: 4px;
+    }
+    .zone-badge {
       display: inline-block;
-      padding: 5px 15px;
+      padding: 4px 13px;
       border-radius: 999px;
-      font-size: 0.84rem;
+      font-size: 0.8rem;
       font-weight: 800;
       margin-bottom: 10px;
     }
-    .hub-advice { font-size: 0.86rem; color: #cbd5e1; max-width: 490px; margin: 0 auto 14px; }
 
-    /* Abstracted Pillar Badges */
-    .pillar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-    .pillar-badge {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 10px;
+    /* Visual Threshold Bar (0-44 Red | 45-69 Yellow | 70-100 Green Entry Window) */
+    .threshold-wrap {
+      max-width: 420px;
+      margin: 0 auto 12px;
+    }
+    .threshold-labels {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      font-size: 0.79rem;
-    }
-    .pillar-name { color: #cbd5e1; font-weight: 600; }
-    .pillar-state { font-weight: 800; font-size: 0.75rem; padding: 2px 7px; border-radius: 6px; }
-    .tone-bull { color: var(--green); background: var(--green-soft); }
-    .tone-neutral { color: var(--yellow); background: var(--yellow-soft); }
-    .tone-bear { color: var(--red); background: var(--red-soft); }
-
-    /* Center Chart */
-    .hub-chart-box {
-      background: rgba(8, 12, 20, 0.55);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 12px 8px;
-    }
-    .chart-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.76rem;
-      color: var(--muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
       margin-bottom: 4px;
     }
-    svg { width: 100%; height: auto; display: block; }
-    .chart-diag { font-size: 0.76rem; color: #a8b8d0; text-align: center; margin-top: 6px; }
+    .threshold-bar {
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,
+        rgba(239,68,68,0.65) 0%, rgba(239,68,68,0.65) 44%,
+        rgba(245,158,11,0.65) 45%, rgba(245,158,11,0.65) 69%,
+        rgba(16,185,129,0.9) 70%, rgba(16,185,129,0.9) 100%);
+      position: relative;
+    }
+    .threshold-marker {
+      position: absolute;
+      top: -4px;
+      width: 4px;
+      height: 16px;
+      background: #ffffff;
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(255,255,255,0.9);
+      transform: translateX(-50%);
+      transition: left 0.25s ease;
+    }
 
-    /* Bottom Signal Cards */
-    .section-bar {
+    .hub-plain-text {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      max-width: 460px;
+      margin: 0 auto 12px;
+    }
+
+    /* Compact Chart inside Hub */
+    .chart-box {
+      background: rgba(7, 11, 18, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 10px 6px;
+    }
+    .chart-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 24px 0 10px;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+      font-size: 0.7rem;
       color: var(--muted);
+      margin-bottom: 2px;
     }
-    .signals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-    .sig-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px; }
-    .sig-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .sig-title { font-weight: 700; font-size: 0.88rem; display: flex; align-items: center; gap: 7px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .sig-score { font-size: 0.75rem; color: var(--muted); font-weight: 700; }
-    .sig-text { font-size: 0.82rem; color: #b5c4da; }
+    .chart-top-row select {
+      background: #141e30;
+      color: #cbd5e1;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+    }
+    svg { width: 100%; height: auto; display: block; }
+
+    /* Collapsible Pillars & Signals (Clean Mobile) */
+    details.info-drawer {
+      margin-top: 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+    details.info-drawer summary {
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    details.info-drawer summary::-webkit-details-marker { display: none; }
+    .drawer-content {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .signals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 10px;
+    }
+    .sig-card {
+      background: #0b111d;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .sig-head { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; }
+    .sig-body { font-size: 0.77rem; color: #9fb0c9; }
 
     /* Footer */
     footer {
-      margin-top: 28px;
-      padding-top: 16px;
+      margin-top: 22px;
+      padding-top: 14px;
       border-top: 1px solid var(--border);
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      font-size: 0.76rem;
+      gap: 10px;
+      font-size: 0.74rem;
       color: var(--muted);
     }
-    .footer-links { display: flex; gap: 14px; }
-    .footer-links a, .footer-links button {
-      background: none;
-      border: none;
-      color: #93c5fd;
-      text-decoration: underline;
-      font-size: 0.76rem;
-      cursor: pointer;
-    }
 
-    /* Modals */
+    /* MODALS (Onboarding Gate, Satellite Detail Modal, Portfolio/Import Modal) */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(4, 7, 13, 0.86);
+      background: rgba(3, 6, 12, 0.86);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 16px;
-      z-index: 100;
+      padding: 14px;
+      z-index: 200;
     }
     .modal-backdrop.open { display: flex; }
     .modal {
       background: var(--panel);
       border: 1px solid var(--border-strong);
       border-radius: 16px;
-      max-width: 780px;
+      max-width: 560px;
       width: 100%;
-      max-height: 92vh;
+      max-height: 90vh;
       overflow-y: auto;
-      padding: 22px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     }
-    .modal h2 { font-size: 1.08rem; margin-bottom: 6px; }
-    .modal p.desc { font-size: 0.82rem; color: var(--muted); margin-bottom: 14px; }
-
-    /* Legal Onboarding Gate */
-    .legal-box {
-      background: #0b111d;
+    .modal h2 { font-size: 1.05rem; margin-bottom: 4px; }
+    .modal p.desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
+    .detail-box {
+      background: #0a101b;
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 0.83rem;
-      color: #cbd5e1;
-      margin-bottom: 14px;
-      line-height: 1.55;
+      border-radius: 11px;
+      padding: 12px;
+      margin-bottom: 12px;
     }
-    .legal-check {
+    .kv-row {
       display: flex;
-      align-items: flex-start;
-      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
       font-size: 0.84rem;
-      color: var(--text);
-      margin-bottom: 16px;
-      cursor: pointer;
     }
-    .legal-check input { margin-top: 4px; transform: scale(1.15); }
+    .kv-row:last-child { border-bottom: none; }
+    .kv-label { color: var(--muted); }
+    .kv-val { font-weight: 700; }
 
-    .import-grid {
+    .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
-    @media (max-width: 640px) { .import-grid { grid-template-columns: 1fr; } }
-
-    .dropzone {
-      border: 2px dashed var(--border-strong);
-      background: rgba(59, 130, 246, 0.06);
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .dropzone:hover, .dropzone.dragover {
-      border-color: var(--accent);
-      background: rgba(59, 130, 246, 0.14);
-    }
-    .dz-title { font-weight: 700; font-size: 0.85rem; color: #dbeafe; }
-    .dz-sub { font-size: 0.74rem; color: var(--muted); margin-top: 3px; }
-    .dz-status {
-      font-size: 0.76rem;
-      color: #93c5fd;
-      margin-top: 8px;
-      font-weight: 600;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
-    .field label { display: block; font-size: 0.73rem; color: var(--muted); margin-bottom: 4px; }
+    @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+    .field label { display: block; font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
     .field input, .modal textarea {
       width: 100%;
-      background: #0b111d;
+      background: #090e18;
       border: 1px solid var(--border);
       border-radius: 8px;
       color: var(--text);
       padding: 8px 10px;
       font-size: 0.84rem;
     }
-    .modal textarea { min-height: 92px; font-family: monospace; font-size: 0.79rem; margin-top: 4px; }
-    .test-log {
-      background: #090e17;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px;
-      font-family: monospace;
-      font-size: 0.75rem;
-      color: #a7f3d0;
-      margin-top: 10px;
-      display: none;
-      white-space: pre-wrap;
+    .modal textarea { min-height: 82px; font-family: monospace; font-size: 0.76rem; }
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
     }
-    .modal-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 16px; }
-    .modal-footer-right { display: flex; flex-wrap: wrap; gap: 8px; }
+    .dropzone {
+      border: 1.5px dashed var(--border-strong);
+      background: rgba(59, 130, 246, 0.06);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 12px;
+      font-size: 0.8rem;
+    }
+    .tone-bull { color: var(--green); background: var(--green-soft); }
+    .tone-neutral { color: var(--yellow); background: var(--yellow-soft); }
+    .tone-bear { color: var(--red); background: var(--red-soft); }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="error-box" id="error-box">
-      <b>Hinweis:</b> <code>live_data.js</code> wurde noch nicht geladen. Bitte führe <code>python update_scores.py</code> aus und lade die Seite neu.
-    </div>
-
-    <!-- Demo-Modus Banner -->
-    <div class="demo-banner" id="demo-banner" style="display:none;">
-      <span><b>Demo-Datensatz aktiv:</b> Du siehst aktuell Beispiel-Positionen zum Testen der Oberfläche.</span>
-      <button onclick="clearDemoData()">Demo löschen & eigene Daten laden</button>
+      <b>Hinweis:</b> <code>live_data.js</code> konnte nicht geladen werden. Bitte einmal den GitHub-Workflow oder <code>update_scores.py</code> ausführen.
     </div>
 
     <header>
       <div class="brand">
-        <h1>Multi-Asset Regime & Horizont Kompass</h1>
-        <div class="sub">v1.5 Beta · Statistischer Markt-Regime-Aggregator & Prozent-Rechner (100 % lokaler Datenschutz)</div>
+        <h1>Regime & Horizont Kompass</h1>
+        <div class="sub">Statistischer Markt- & Regel-Monitor · v2.0 Beta</div>
       </div>
       <div class="header-actions">
-        <!-- Frei wählbarer Benchmark + Dynamisches Outperformance-Badge -->
-        <div class="bm-box" title="Vergleicht dein Portfolio seit Kaufdatum mit dem gewählten Referenz-Asset">
-          <span>Benchmark:</span>
-          <select id="bm-select" onchange="changeBenchmark(this.value)">
-            <option value="MSCI_WORLD">MSCI World</option>
-            <option value="BTC">Bitcoin (BTC)</option>
-            <option value="SP500">S&P 500</option>
-            <option value="GOLD">Gold (XAU)</option>
-          </select>
-          <span class="bm-ahead" id="bm-ahead-badge">+0,0 % Ahead</span>
-        </div>
-
-        <span class="status-pill" id="last-updated">Stand: Lade...</span>
-        <button class="btn-action" onclick="openModal()">Portfolio · CSV / OCR</button>
+        <span class="status-pill" id="last-updated">Lade Daten...</span>
+        <button class="btn-action" onclick="openImportModal()">Depot / CSV</button>
       </div>
     </header>
 
-    <!-- Gesamt-Portfolio Strip -->
-    <div class="pf-strip">
-      <div class="pf-kpi"><span>Positionswert (≈ EUR)</span><strong id="kpi-invested">-</strong></div>
-      <div class="pf-kpi"><span>Dry-Powder Reserve</span><strong id="kpi-cash">-</strong></div>
-      <div class="pf-kpi"><span>Cash-Quote</span><strong id="kpi-cash-pct">-</strong></div>
-      <div class="pf-kpi"><span>Sektor-Zielquote</span><strong id="kpi-pivot">-</strong></div>
-    </div>
-
-    <div class="controls">
-      <div class="control-box">
-        <span class="control-label">1. Asset auswählen</span>
-        <div class="pill-group" id="asset-buttons"></div>
+    <!-- Asset & Horizon Selectors -->
+    <div class="selector-bar">
+      <div class="sel-box">
+        <div class="pill-row scroll-mobile" id="asset-buttons"></div>
       </div>
-      <div class="control-box">
-        <span class="control-label">2. Betrachtungshorizont wählen</span>
-        <div class="pill-group" id="horizon-buttons"></div>
+      <div class="sel-box">
+        <div class="pill-row" id="horizon-buttons"></div>
       </div>
     </div>
 
-    <!-- HUB-AND-SPOKE MAIN LAYOUT -->
-    <div class="hub-grid">
-      <div class="spoke-col">
-        <div class="sat-card">
-          <div>
-            <div class="sat-header">
-              <span class="sat-title">1 · Position & Einstand</span>
-              <span class="sat-tag" id="sat1-tag">-</span>
-            </div>
-            <div class="kv-list" id="sat1-body"></div>
+    <!-- COMPACT HUB + 4 MINI SATELLITES -->
+    <div class="cockpit">
+      <!-- Left Mini Satellites -->
+      <div class="sat-stack">
+        <button class="mini-sat" id="mini-sat-1" onclick="openSatModal(1)">
+          <div class="mini-top">
+            <span class="mini-label"><span class="status-dot" id="dot-1"></span>1 · Position</span>
+            <span class="mini-open-hint">Details ↗</span>
           </div>
-          <div class="sat-note" id="sat1-note"></div>
-        </div>
+          <div class="mini-main-val" id="mval-1">-</div>
+          <div class="mini-sub-val" id="msub-1">-</div>
+        </button>
 
-        <div class="sat-card">
-          <div>
-            <div class="sat-header">
-              <span class="sat-title">2 · Aufwärts-Kursmarken</span>
-              <span class="sat-tag" id="sat2-tag">-</span>
-            </div>
-            <div class="kv-list" id="sat2-body"></div>
+        <button class="mini-sat" id="mini-sat-2" onclick="openSatModal(2)">
+          <div class="mini-top">
+            <span class="mini-label"><span class="status-dot" id="dot-2"></span>2 · Gewinn-Korridor</span>
+            <span class="mini-open-hint">Regel ⚙</span>
           </div>
-          <div class="sat-note" id="sat2-note"></div>
-        </div>
+          <div class="mini-main-val" id="mval-2">-</div>
+          <div class="mini-sub-val" id="msub-2">-</div>
+        </button>
       </div>
 
-      <section class="hub-center">
-        <div class="hub-top">
-          <div class="hub-meta" id="hub-meta">-</div>
-          <div class="hub-price" id="hub-price">-</div>
-          <div class="score-ring">
-            <span class="score-num" id="hub-score">-</span>
-            <span class="score-denom">/ 100</span>
+      <!-- CENTER HUB -->
+      <section class="hub-core">
+        <div class="hub-asset-title" id="hub-meta">-</div>
+        <div class="hub-price-tag" id="hub-price">-</div>
+
+        <div class="score-hero">
+          <span class="score-big" id="hub-score">-</span>
+          <span class="score-of">/ 100</span>
+        </div>
+        <div><span class="zone-badge" id="hub-badge">-</span></div>
+
+        <!-- Visible Threshold Scale -->
+        <div class="threshold-wrap">
+          <div class="threshold-labels">
+            <span style="color:var(--red);">0–44 Gegenwind</span>
+            <span style="color:var(--yellow);">45–69 Neutral</span>
+            <span style="color:var(--green);">70–100 Einstiegs-Fenster</span>
           </div>
-          <div><span class="regime-pill" id="hub-badge">-</span></div>
-          <p class="hub-advice" id="hub-advice"></p>
+          <div class="threshold-bar">
+            <div class="threshold-marker" id="score-marker" style="left:50%;"></div>
+          </div>
         </div>
 
-        <div class="pillar-grid" id="pillar-grid"></div>
+        <p class="hub-plain-text" id="hub-advice">-</p>
 
-        <div class="hub-chart-box">
-          <div class="chart-head">
-            <span>Regime-Kurve (Logarithmische Zeitachse)</span>
-            <span><b id="legend-asset">BTC</b> vs. Makro-Benchmark</span>
+        <!-- Logarithmic Horizon Chart -->
+        <div class="chart-box">
+          <div class="chart-top-row">
+            <span>Zeithorizont-Verlauf (Log-Skala)</span>
+            <select id="bm-select" onchange="renderAll()">
+              <option value="macro">vs. Makro-Basis</option>
+              <option value="MSCI">vs. MSCI World</option>
+              <option value="BTC">vs. Bitcoin</option>
+              <option value="GOLD">vs. Gold</option>
+            </select>
           </div>
-          <svg id="horizon-chart" viewBox="0 0 540 195"></svg>
-          <div class="chart-diag" id="chart-diag"></div>
+          <svg id="horizon-chart" viewBox="0 0 520 155"></svg>
         </div>
       </section>
 
-      <div class="spoke-col">
-        <div class="sat-card">
-          <div>
-            <div class="sat-header">
-              <span class="sat-title">3 · Abwärts-Schwellen</span>
-              <span class="sat-tag" id="sat3-tag">-</span>
-            </div>
-            <div class="kv-list" id="sat3-body"></div>
+      <!-- Right Mini Satellites -->
+      <div class="sat-stack">
+        <button class="mini-sat" id="mini-sat-3" onclick="openSatModal(3)">
+          <div class="mini-top">
+            <span class="mini-label"><span class="status-dot" id="dot-3"></span>3 · Rücksetzer-Radar</span>
+            <span class="mini-open-hint">Zonen ↗</span>
           </div>
-          <div class="sat-note" id="sat3-note"></div>
-        </div>
+          <div class="mini-main-val" id="mval-3">-</div>
+          <div class="mini-sub-val" id="msub-3">-</div>
+        </button>
 
-        <div class="sat-card">
-          <div>
-            <div class="sat-header">
-              <span class="sat-title">4 · Haltedauer & Allokation</span>
-              <span class="sat-tag" id="sat4-tag">-</span>
-            </div>
-            <div class="kv-list" id="sat4-body"></div>
+        <button class="mini-sat" id="mini-sat-4" onclick="openSatModal(4)">
+          <div class="mini-top">
+            <span class="mini-label"><span class="status-dot" id="dot-4"></span>4 · Haltefrist & Cash</span>
+            <span class="mini-open-hint">Details ↗</span>
           </div>
-          <div class="sat-note" id="sat4-note"></div>
-        </div>
+          <div class="mini-main-val" id="mval-4">-</div>
+          <div class="mini-sub-val" id="msub-4">-</div>
+        </button>
       </div>
     </div>
 
-    <div class="section-bar">
-      <span>Statistische Faktor-Einordnung (Live-Snapshot)</span>
-      <span id="macro-strip">-</span>
-    </div>
-    <div class="signals-grid" id="signals-grid"></div>
+    <!-- Collapsible Factor & Glossary Drawer -->
+    <details class="info-drawer">
+      <summary>
+        <span>ⓘ Was bedeuten Score, Farben & Faktoren? (Klartext-Erklärung)</span>
+        <span style="color:var(--muted); font-size:0.74rem;">Aufklappen ▾</span>
+      </summary>
+      <div class="drawer-content">
+        <p style="font-size:0.79rem; color:#cbd5e1; margin-bottom:10px;">
+          <b>So liest du die Farben:</b> Im Zentrum zeigt <b>Grün (70–100)</b> ein historisch starkes <b>Einstiegs- & Rückenwind-Fenster</b> auf Basis von Trend- und Makrodaten. Im Satellit <b>2 · Gewinn-Korridor</b> leuchtet <b>Grün (🎯 Zielkorridor aktiv)</b> auf, sobald deine Position deine selbst gewählte Gewinnmarke erreicht hat <i>und</i> der Markt kurzfristig heiß läuft. Alle Anzeigen sind rein statistische Berechnungen und keine Anlageberatung.
+        </p>
+        <div class="signals-grid" id="signals-grid"></div>
+      </div>
+    </details>
 
     <footer>
-      <span>Hinweis: Rein mathematisch-statistisches Informations-Tool auf Basis historischer Marktdaten. Keine Zukunftsprognose, keine Anlage- oder Steuerberatung.</span>
-      <div class="footer-links">
-        <button onclick="openLegalModal()">Nutzungshinweise</button>
-        <a href="mailto:feedback@regime-kompass.local?subject=Beta-Feedback%20Regime-Kompass">Beta-Feedback senden</a>
+      <span>Statistisches Informations-Tool · Keine Anlage- oder Steuerberatung · Alle Depotdaten bleiben 100 % lokal im Browser.</span>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-ghost" onclick="openDisclaimer()">Rechtlicher Hinweis</button>
+        <button class="btn-ghost" id="btn-feedback" onclick="copyBetaFeedback()">Beta-Feedback kopieren</button>
       </div>
     </footer>
   </div>
 
-  <!-- AKTIVES LEGAL ONBOARDING GATE -->
-  <div class="modal-backdrop" id="legal-modal">
-    <div class="modal" style="max-width: 580px;">
-      <h2>Willkommen zur Beta-Version · Wichtiger Hinweis</h2>
-      <p class="desc">Bitte bestätige vor der Nutzung die Funktionsweise dieses Tools:</p>
-      <div class="legal-box">
-        <p style="margin-bottom:8px;"><b>1. Statistische Einordnung statt Prognose:</b> Alle Scores (0–100) verdichten historische Markt-, Liquiditäts- und Trenddaten. Sie stellen keine Vorhersage künftiger Kursentwicklungen dar.</p>
-        <p style="margin-bottom:8px;"><b>2. Neutraler Prozent-Rechner:</b> Die angezeigten Kursmarken und Abstände basieren auf deinen eigenen Eingaben und selbst gewählten Prozent-Schwellen. Es erfolgen weder Kauf- noch Verkaufsempfehlungen noch steuerliche Bewertungen.</p>
-        <p><b>3. 100 % Lokale Datenhaltung:</b> Hochgeladene Broker-CSVs und Screenshots werden ausschließlich im Arbeitsspeicher deines Browsers verarbeitet und niemals an einen Server übertragen.</p>
+  <!-- ONBOARDING / LEGAL GATE MODAL -->
+  <div class="modal-backdrop" id="gate-modal">
+    <div class="modal">
+      <h2>Hinweis vor der Nutzung (Beta-Version)</h2>
+      <p class="desc">Bitte bestätige kurz die Einordnung dieses Tools, bevor du startest:</p>
+      <div class="detail-box" style="font-size:0.82rem; color:#cbd5e1;">
+        Der <b>Regime & Horizont Kompass</b> ist ein rein mathematisch-statistischer Markt- und Regel-Monitor. Alle angezeigten Scores, Zonen und Prozentmarken basieren auf historischen Marktdaten sowie deinen eigenen Eingaben. Sie stellen <b>weder eine Zukunftsprognose noch eine persönliche Anlage- oder Steuerberatung</b> dar.
       </div>
-      <label class="legal-check">
-        <input type="checkbox" id="legal-checkbox" onchange="document.getElementById('btn-accept-legal').disabled = !this.checked" />
-        <span>Ich habe verstanden, dass dieses Tool ein rein mathematisch-statistisches Informationsinstrument ist und weder Anlage- noch Steuerberatung ersetzt.</span>
+      <label style="display:flex; align-items:flex-start; gap:9px; font-size:0.82rem; cursor:pointer;">
+        <input type="checkbox" id="gate-check" style="margin-top:3px;" />
+        <span>Verstanden – ich nutze das Tool ausschließlich als statistische Informationshilfe in eigener Verantwortung.</span>
       </label>
-      <div class="modal-footer" style="justify-content: flex-end;">
-        <button class="btn-action" id="btn-accept-legal" disabled onclick="acceptLegalGate()">Bestätigen & Kompass öffnen</button>
+      <div class="modal-actions">
+        <button class="btn-action" onclick="acceptGate()">Weiter zum Kompass</button>
       </div>
     </div>
   </div>
 
-  <!-- PORTFOLIO, TOP-10 BROKER CSV & OCR MODAL -->
-  <div class="modal-backdrop" id="portfolio-modal">
+  <!-- SATELLITE DETAIL & RULE MODAL -->
+  <div class="modal-backdrop" id="sat-modal">
     <div class="modal">
-      <h2>Lokaler Portfolio-Import & Rechner-Parameter</h2>
-      <p class="desc">Unterstützt CSV-Exporte der Top-10 EU-Broker (DADAT, eToro, Trade Republic, Scalable, IBKR, Bitpanda, Flatex, Degiro, Smartbroker+, Revolut) sowie Tabellen-Screenshots.</p>
+      <h2 id="sat-modal-title">Satellit Details</h2>
+      <p class="desc" id="sat-modal-desc">-</p>
+      <div class="detail-box" id="sat-modal-body"></div>
+      <div id="sat-modal-settings"></div>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeSatModal()">Schließen</button>
+        <button class="btn-action" id="sat-modal-save" style="display:none;" onclick="saveSatSettings()">Regel speichern</button>
+      </div>
+    </div>
+  </div>
 
-      <div class="import-grid">
-        <div class="dropzone" id="csv-dropzone" onclick="document.getElementById('csv-file').click()">
-          <input type="file" id="csv-file" accept=".csv,.tsv,.txt" style="display:none" onchange="handleCsvFile(this.files[0])" />
-          <div class="dz-title">Top-10 Broker-CSV hochladen (.csv / .txt)</div>
-          <div class="dz-sub">DADAT, eToro, Trade Republic, Scalable, IBKR, Bitpanda, Flatex, Degiro, Smartbroker+, Revolut</div>
-          <div class="dz-status" id="csv-status">Bereit für CSV-Datei</div>
+  <!-- PORTFOLIO & CSV IMPORT MODAL -->
+  <div class="modal-backdrop" id="import-modal">
+    <div class="modal">
+      <h2>Mein Depot & CSV-Import (100 % lokal)</h2>
+      <p class="desc">Deine Bestände werden nur in deinem Browser gespeichert und niemals hochgeladen.</p>
+
+      <div class="form-row">
+        <div class="field">
+          <label id="imp-lbl-qty">Bestand (Stück / Coins)</label>
+          <input type="number" step="any" id="imp-qty" />
         </div>
-
-        <div class="dropzone" id="ocr-dropzone" onclick="document.getElementById('ocr-file').click()">
-          <input type="file" id="ocr-file" accept="image/*" style="display:none" onchange="handleOcrFile(this.files[0])" />
-          <div class="dz-title">Tabellen-Screenshot (Bild oder Strg+V)</div>
-          <div class="dz-sub">Lokale Texterkennung mit 2x-Kontrast-Boost & eToro-Spaltenlogik</div>
-          <div class="dz-status" id="ocr-status">Bereit für Tabellen-Bild</div>
+        <div class="field">
+          <label id="imp-lbl-avg">Ø Einstandskurs</label>
+          <input type="number" step="any" id="imp-avg" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Kaufdatum (für Haltefrist-Anzeige)</label>
+          <input type="date" id="imp-date" />
+        </div>
+        <div class="field">
+          <label>Freie Bar-Reserve / Cash (EUR)</label>
+          <input type="number" step="any" id="imp-cash" />
         </div>
       </div>
 
-      <div class="form-grid">
-        <div class="field">
-          <label id="lbl-qty">Bestand (Stück / Coins)</label>
-          <input type="number" step="any" id="inp-qty" placeholder="z. B. 22.831" />
-        </div>
-        <div class="field">
-          <label id="lbl-avg">Ø Einstandskurs (Asset-Währung)</label>
-          <input type="number" step="any" id="inp-avg" placeholder="z. B. 21.90" />
-        </div>
-        <div class="field">
-          <label>Kaufdatum (für Haltedauer)</label>
-          <input type="date" id="inp-date" />
-        </div>
-      </div>
-
-      <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
-        <div class="field">
-          <label>Dry-Powder Reserve (EUR)</label>
-          <input type="number" step="any" id="inp-cash" />
-        </div>
-        <div class="field">
-          <label>Sektor-Zielquote (%)</label>
-          <input type="number" step="1" id="inp-pivot" />
-        </div>
-        <div class="field">
-          <label>Rechner Aufwärts-Stufe 1 (%)</label>
-          <input type="number" step="1" id="inp-up1" />
-        </div>
-        <div class="field">
-          <label>Rechner Abwärts-Schwelle 1 (%)</label>
-          <input type="number" step="1" id="inp-dn1" />
-        </div>
+      <div class="dropzone" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" accept=".csv,.txt,image/*" style="display:none" onchange="handleUniversalFile(this.files[0])" />
+        <b>CSV-Datei (Broker-Export) oder Screenshot hier auswählen</b>
+        <div style="font-size:0.73rem; color:var(--muted); margin-top:2px;" id="imp-status">Unterstützt ETH, SOL, BTC, MSCI World (EUNL.DE / IE00B4L5Y983), NVDA, Gold u.v.m.</div>
       </div>
 
       <div class="field">
-        <label>Vorschau erkannter Positionen (<code>TICKER;MENGE;EINSTAND;YYYY-MM-DD</code> – editierbar)</label>
-        <textarea id="inp-csv" placeholder="VU.PA;15;142.50;2025-03-14&#10;AVAX;22.83105;21.90;2025-08-04"></textarea>
+        <label>CSV / Text-Vorschau (<code>TICKER;MENGE;EINSTAND;YYYY-MM-DD</code>)</label>
+        <textarea id="imp-csv" placeholder="BTC;0.15;62400;2025-02-15&#10;ETH;1.8;2850;2025-03-01&#10;MSCI;35;94.50;2024-11-10&#10;NVDA;12;118.00;2025-01-20"></textarea>
       </div>
 
-      <div class="test-log" id="broker-test-log"></div>
-
-      <div class="modal-footer">
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <button class="btn-ghost" onclick="run10BrokerSelfTest()">10-Broker-Selbsttest</button>
-          <button class="btn-ghost" onclick="resetPortfolioDefaults()">Demo-Daten laden</button>
-        </div>
-        <div class="modal-footer-right">
-          <button class="btn-ghost" onclick="closeModal()">Abbrechen</button>
-          <button class="btn-ghost" onclick="applyCsvImport()">Alle Zeilen übernehmen</button>
-          <button class="btn-action" onclick="saveCurrentAssetPortfolio()">Einzel-Asset speichern</button>
+      <div class="modal-actions" style="justify-content:space-between;">
+        <button class="btn-ghost" onclick="loadBetaSample()">Beta-Musterdepot laden</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-ghost" onclick="closeImportModal()">Abbrechen</button>
+          <button class="btn-action" onclick="saveImportAndSingle()">Übernehmen</button>
         </div>
       </div>
     </div>
@@ -733,207 +689,226 @@
       { id: "5y", label: "5 Jahre+", days: 1825 }
     ];
 
-    const BENCHMARK_CONFIG = {
-      MSCI_WORLD: { label: "MSCI World", annualRate: 0.085 },
-      BTC:        { label: "Bitcoin (BTC)", annualRate: 0.25 },
-      SP500:      { label: "S&P 500", annualRate: 0.10 },
-      GOLD:       { label: "Gold (XAU)", annualRate: 0.09 }
-    };
-
-    const DEFAULT_PORTFOLIO = {
-      isDemo: true,
-      benchmark: "MSCI_WORLD",
-      cashReserveEur: 3000,
-      pivotTargetPct: 15,
-      calcUp1Pct: 25,
-      calcDn1Pct: 15,
+    const BETA_SAMPLE = {
+      cashReserveEur: 3500,
+      tpTargetCryptoPct: 30,
+      tpTargetTradfiPct: 18,
       positions: {
-        BTC:     { qty: 0,     avgPrice: 68000, buyDate: "" },
-        ADA:     { qty: 12000, avgPrice: 0.45,  buyDate: "2024-06-15" },
-        SUI:     { qty: 1000,  avgPrice: 1.67,  buyDate: "2025-02-10" },
-        AVAX:    { qty: 65,    avgPrice: 17.92, buyDate: "2025-03-05" },
-        NIGHT:   { qty: 10000, avgPrice: 0.053, buyDate: "2025-12-10" },
-        "VU.PA": { qty: 0,     avgPrice: 145.0, buyDate: "" },
-        GOLD:    { qty: 0,     avgPrice: 2720,  buyDate: "" }
+        BTC:   { qty: 0.15, avgPrice: 62400, buyDate: "2025-02-15" },
+        ETH:   { qty: 1.80, avgPrice: 2850,  buyDate: "2025-03-01" },
+        SOL:   { qty: 14.5, avgPrice: 142.0, buyDate: "2025-04-05" },
+        MSCI:  { qty: 35.0, avgPrice: 94.50, buyDate: "2024-11-10" },
+        NVDA:  { qty: 12.0, avgPrice: 118.0, buyDate: "2025-01-20" },
+        GOLD:  { qty: 4.0,  avgPrice: 2350,  buyDate: "2024-09-12" }
       }
     };
 
-    function loadPortfolio() {
+    function loadState() {
       try {
-        const raw = localStorage.getItem("regime_kompass_portfolio_v1_5");
-        if (!raw) return JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO));
-        const parsed = JSON.parse(raw);
+        const raw = localStorage.getItem("regime_kompass_v2");
+        if (!raw) return JSON.parse(JSON.stringify(BETA_SAMPLE));
+        const p = JSON.parse(raw);
         return {
-          isDemo: parsed.isDemo ?? false,
-          benchmark: parsed.benchmark || "MSCI_WORLD",
-          cashReserveEur: parsed.cashReserveEur ?? 0,
-          pivotTargetPct: parsed.pivotTargetPct ?? 15,
-          calcUp1Pct: parsed.calcUp1Pct ?? 25,
-          calcDn1Pct: parsed.calcDn1Pct ?? 15,
-          positions: parsed.positions || {}
+          cashReserveEur: p.cashReserveEur ?? 3500,
+          tpTargetCryptoPct: p.tpTargetCryptoPct ?? 30,
+          tpTargetTradfiPct: p.tpTargetTradfiPct ?? 18,
+          positions: p.positions || {}
         };
       } catch (e) {
-        return JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO));
+        return JSON.parse(JSON.stringify(BETA_SAMPLE));
       }
     }
 
-    function persistPortfolio(pf) {
-      localStorage.setItem("regime_kompass_portfolio_v1_5", JSON.stringify(pf));
-    }
-
-    let portfolio = loadPortfolio();
+    let state = loadState();
     let selectedAsset = "BTC";
     let selectedHorizon = "1m";
+    let activeSatModal = 1;
 
-    // Legal Gate Check
-    function checkLegalGate() {
-      const accepted = localStorage.getItem("regime_kompass_terms_accepted_v15");
-      if (!accepted) {
-        document.getElementById("legal-modal").classList.add("open");
+    function saveState() {
+      localStorage.setItem("regime_kompass_v2", JSON.stringify(state));
+    }
+
+    function fmtNum(v, d = 2) {
+      if (v === null || v === undefined || isNaN(v)) return "-";
+      return Number(v).toLocaleString("de-DE", { minimumFractionDigits: d, maximumFractionDigits: d });
+    }
+
+    function fmtPrice(v, cur) {
+      if (!v || v <= 0) return "Kein Kurs";
+      return `${fmtNum(v, v < 2 ? 4 : 2)} ${cur}`;
+    }
+
+    // Legal Gate
+    function checkGate() {
+      if (!localStorage.getItem("regime_kompass_gate_v2")) {
+        document.getElementById("gate-modal").classList.add("open");
       }
     }
-    window.openLegalModal = function() {
-      document.getElementById("legal-checkbox").checked = false;
-      document.getElementById("btn-accept-legal").disabled = true;
-      document.getElementById("legal-modal").classList.add("open");
+    window.openDisclaimer = function() {
+      document.getElementById("gate-check").checked = true;
+      document.getElementById("gate-modal").classList.add("open");
     };
-    window.acceptLegalGate = function() {
-      localStorage.setItem("regime_kompass_terms_accepted_v15", "true");
-      document.getElementById("legal-modal").classList.remove("open");
-    };
-
-    window.clearDemoData = function() {
-      portfolio = {
-        isDemo: false,
-        benchmark: portfolio.benchmark || "MSCI_WORLD",
-        cashReserveEur: 0,
-        pivotTargetPct: 15,
-        calcUp1Pct: 25,
-        calcDn1Pct: 15,
-        positions: {}
-      };
-      persistPortfolio(portfolio);
-      renderAll();
-      openModal();
-    };
-
-    window.changeBenchmark = function(val) {
-      portfolio.benchmark = val;
-      persistPortfolio(portfolio);
-      renderAll();
-    };
-
-    function fmtNum(val, dec = 2) {
-      if (val === null || val === undefined || isNaN(val)) return "-";
-      return Number(val).toLocaleString("de-DE", { minimumFractionDigits: dec, maximumFractionDigits: dec });
-    }
-
-    function fmtPrice(val, cur) {
-      if (!val || val <= 0) return "Kein Live-Kurs";
-      const dec = val < 2 ? 4 : 2;
-      return `${fmtNum(val, dec)} ${cur}`;
-    }
-
-    // Rein deskriptiv-statistische Regime-Labels (keine Handlungsaufforderung)
-    function getRegimeMeta(score, horizonId) {
-      const isLong = (horizonId === "1y" || horizonId === "5y");
-      if (score >= 70) {
-        return {
-          label: isLong ? "Oberes Perzentil · Zyklus-Rückenwind" : "Oberes Perzentil · Trend-Stärke",
-          color: "var(--green)",
-          bg: "var(--green-soft)",
-          advice: isLong
-            ? "Historisch überdurchschnittliche Konstellation aus Makro-Liquidität und Zyklus-Lage (statistische Einordnung, keine Zukunftsprognose)."
-            : "Positives kurzfristiges Momentum über den gewichteten Kernfaktoren im historischen Vergleich."
-        };
+    window.acceptGate = function() {
+      if (!document.getElementById("gate-check").checked) {
+        alert("Bitte bestätige zuerst den Hinweis über die Checkbox.");
+        return;
       }
-      if (score >= 45) {
-        return {
-          label: "Mittleres Perzentil · Konsolidierung",
-          color: "var(--yellow)",
-          bg: "var(--yellow-soft)",
-          advice: "Ausgeglichene Marktphase im historischen Mittelfeld ohne statistisches Extrem-Signal."
-        };
-      }
-      return {
-        label: isLong ? "Unteres Perzentil · Struktur-Gegenwind" : "Unteres Perzentil · Abwärtsdruck",
-        color: "var(--red)",
-        bg: "var(--red-soft)",
-        advice: isLong
-          ? "Abgekühlte Zyklus- oder Liquiditätswerte im Mehrjahresvergleich."
-          : "Kurzfristig gedämpfte Momentum- und Liquiditätsfaktoren im aktuellen Zeitfenster."
-      };
-    }
-
-    function dotColor(score) {
-      if (score >= 68) return "var(--green)";
-      if (score >= 45) return "var(--yellow)";
-      return "var(--red)";
-    }
+      localStorage.setItem("regime_kompass_gate_v2", "accepted");
+      document.getElementById("gate-modal").classList.remove("open");
+    };
 
     window.selectAsset = function(id) { selectedAsset = id; renderAll(); };
     window.selectHorizon = function(id) { selectedHorizon = id; renderAll(); };
 
-    function renderPortfolioStripAndBenchmark(DATA) {
-      const eurUsd = (DATA.macro_summary && DATA.macro_summary.eurusd) ? DATA.macro_summary.eurusd : 1.08;
-      let totalInvestedEur = 0;
-      let totalCostEur = 0;
-      let bmHypotheticalEur = 0;
-
-      const bmCfg = BENCHMARK_CONFIG[portfolio.benchmark] || BENCHMARK_CONFIG.MSCI_WORLD;
-      document.getElementById("bm-select").value = portfolio.benchmark || "MSCI_WORLD";
-
-      Object.keys(DATA.assets).forEach(id => {
-        const a = DATA.assets[id];
-        const pos = portfolio.positions[id];
-        if (pos && pos.qty > 0 && a.price > 0) {
-          const fx = (a.currency === "EUR") ? 1.0 : eurUsd;
-          const nowEur = (pos.qty * a.price) / fx;
-          totalInvestedEur += nowEur;
-
-          if (pos.avgPrice > 0) {
-            const costEur = (pos.qty * pos.avgPrice) / fx;
-            totalCostEur += costEur;
-            let daysHeld = 0;
-            if (pos.buyDate) {
-              const diff = Date.now() - new Date(pos.buyDate).getTime();
-              daysHeld = Math.max(0, Math.floor(diff / 86400000));
-            }
-            const bmFactor = Math.pow(1.0 + bmCfg.annualRate, daysHeld / 365.0);
-            bmHypotheticalEur += costEur * bmFactor;
-          }
-        }
-      });
-
-      const cash = portfolio.cashReserveEur || 0;
-      const totalAll = totalInvestedEur + cash;
-      const cashPct = totalAll > 0 ? (cash / totalAll) * 100 : 100;
-
-      document.getElementById("kpi-invested").textContent = `${fmtNum(totalInvestedEur, 0)} EUR`;
-      document.getElementById("kpi-cash").textContent = `${fmtNum(cash, 0)} EUR`;
-      document.getElementById("kpi-cash-pct").textContent = `${fmtNum(cashPct, 1)} %`;
-      document.getElementById("kpi-pivot").textContent = `${portfolio.pivotTargetPct} %`;
-
-      // Dynamisches Outperformance-Badge (leuchtet NUR auf, wenn Portfolio > gewählter Benchmark)
-      const badgeEl = document.getElementById("bm-ahead-badge");
-      if (totalCostEur > 0) {
-        const pfRet = ((totalInvestedEur / totalCostEur) - 1.0) * 100.0;
-        const bmRet = ((bmHypotheticalEur / totalCostEur) - 1.0) * 100.0;
-        const delta = pfRet - bmRet;
-        if (delta > 0.05) {
-          badgeEl.textContent = `+${fmtNum(delta, 1)} % vs. ${bmCfg.label}`;
-          badgeEl.style.display = "inline-block";
-        } else {
-          badgeEl.style.display = "none";
-        }
-      } else {
-        badgeEl.style.display = "none";
+    function getZoneInfo(score, horizonId) {
+      const isLong = (horizonId === "1y" || horizonId === "5y");
+      if (score >= 70) {
+        return {
+          badge: "🟢 Einstiegs- & Rückenwind-Fenster",
+          color: "var(--green)",
+          bg: "var(--green-soft)",
+          text: isLong
+            ? "Historisch starkes Zyklus- und Makro-Perzentil (70–100). Statistisch günstiges Umfeld für langfristigen Aufbau."
+            : "Starker Aufwärtsimpuls über Trend- und Liquiditätsfaktoren. Bestehende Trends laufen statistisch stabil."
+        };
       }
+      if (score >= 45) {
+        return {
+          badge: "🟡 Neutral-Zone · Kein Extrem",
+          color: "var(--yellow)",
+          bg: "var(--yellow-soft)",
+          text: "Weder Übertreibung noch klares Einstiegs-Extrem. Bestehende Positionen ruhig beobachten."
+        };
+      }
+      return {
+        badge: "🔴 Gegenwind-Zone · Erhöhtes Risiko",
+        color: "var(--red)",
+        bg: "var(--red-soft)",
+        text: isLong
+          ? "Abgekühlter Zyklus oder Makro-Bremse. Statistisch erhöhtes Risiko für zu frühe Einstiege."
+          : "Kurzfristiger Abwärtsdruck. Statistisch schwaches Momentum – Geduld bis zur Bodenbildung."
+      };
+    }
+
+    function computeSatelliteData(asset, score) {
+      const pos = state.positions[asset.id] || { qty: 0, avgPrice: 0, buyDate: "" };
+      const cur = asset.currency;
+      const price = asset.price || 0;
+      const dec = price < 2 ? 4 : 2;
+      const hasPos = pos.qty > 0 && pos.avgPrice > 0 && price > 0;
+      const pnlPct = hasPos ? ((price / pos.avgPrice) - 1.0) * 100.0 : 0;
+      const posVal = hasPos ? pos.qty * price : 0;
+
+      // Sat 1: Position & Break-Even
+      let sat1 = {
+        tone: "yellow",
+        main: "Kein Bestand",
+        sub: "Watchlist · Tippen für Details",
+        rows: [
+          ["Aktueller Referenzkurs", fmtPrice(price, cur)],
+          ["Hinterlegter Bestand", "0 (Watchlist)"],
+          ["Status", "Noch keine Position erfasst"]
+        ],
+        note: "Über „Depot / CSV“ kannst du deinen Bestand und Einstandskurs eintragen."
+      };
+      if (hasPos) {
+        const inPlus = pnlPct >= 0;
+        const neededPct = ((pos.avgPrice / price) - 1.0) * 100.0;
+        sat1 = {
+          tone: inPlus ? "green" : "red",
+          main: `${pnlPct >= 0 ? "+" : ""}${fmtNum(pnlPct, 1)} % zum Einstand`,
+          sub: `${fmtNum(posVal, 0)} ${cur} · BE ${fmtNum(pos.avgPrice, dec)}`,
+          rows: [
+            ["Bestand & aktueller Wert", `${fmtNum(pos.qty, pos.qty < 10 ? 3 : 1)} Stk. (${fmtNum(posVal, 0)} ${cur})`],
+            ["Ø Einstandskurs (Break-Even)", `${fmtNum(pos.avgPrice, dec)} ${cur}`],
+            ["Abstand zum Break-Even", inPlus ? `Im Gewinn (+${fmtNum(pnlPct, 1)} %)` : `Unter Einstand (+${fmtNum(neededPct, 1)} % bis BE)`]
+          ],
+          note: inPlus
+            ? "Deine Position liegt über deinem durchschnittlichen Einstandskurs."
+            : "Deine Position liegt unter dem Einstandskurs. Reine Bestandsanzeige ohne Verkaufsaufforderung."
+        };
+      }
+
+      // Sat 2: Gewinn-Mitnahme-Korridor (User-defined % + Short-term Heat)
+      const targetPct = asset.profile === "crypto" ? state.tpTargetCryptoPct : state.tpTargetTradfiPct;
+      const targetPrice = hasPos ? pos.avgPrice * (1 + targetPct / 100.0) : price * (1 + targetPct / 100.0);
+      const s1w = asset.scores["1w"] ?? 50;
+      const rsi = asset.rsi ?? 50;
+      const overheated = (s1w >= 76 || rsi >= 72);
+      const targetReached = hasPos && pnlPct >= targetPct;
+
+      let sat2Tone = "yellow";
+      let sat2Main = `Ziel +${targetPct} % (${fmtNum(targetPrice, dec)})`;
+      let sat2Sub = hasPos ? (targetReached ? "Zielmarke erreicht · Trend läuft" : "Noch unter persönlicher Zielmarke") : "Persönliche Ziel-Regel";
+
+      if (targetReached && overheated) {
+        sat2Tone = "green";
+        sat2Main = "🎯 Zielkorridor aktiv";
+        sat2Sub = `+${fmtNum(pnlPct, 1)} % Gewinn · Kurzfristig heiß`;
+      } else if (hasPos && pnlPct < 0) {
+        sat2Tone = "red";
+        sat2Main = "Unter Einstand";
+        sat2Sub = `Zielmarke bei ${fmtNum(targetPrice, dec)} ${cur}`;
+      }
+
+      const sat2 = {
+        tone: sat2Tone,
+        highlight: (targetReached && overheated) ? "highlight-bull" : "",
+        main: sat2Main,
+        sub: sat2Sub,
+        rows: [
+          ["Deine Gewinn-Zielregel", `+${targetPct} % über Einstand (${fmtNum(targetPrice, dec)} ${cur})`],
+          ["Stufe 2 (+50 % Aufschlag)", `${fmtNum((hasPos ? pos.avgPrice : price) * (1 + (targetPct * 1.6) / 100), dec)} ${cur}`],
+          ["Kurzfrist-Temperatur (1W / RSI)", `Score ${s1w}/100 · RSI ${rsi} (${overheated ? "Überhitzt" : "Normal"})`]
+        ],
+        note: "Diese Zone wird automatisch grün (🎯), wenn deine persönliche Gewinnmarke erreicht ist UND der Markt kurzfristig überhitzt."
+      };
+
+      // Sat 3: Rücksetzer-Radar (DCA Zones)
+      const drops = asset.profile === "crypto" ? [0.85, 0.75, 0.65] : [0.94, 0.88, 0.82];
+      const s1y = asset.scores["1y"] ?? 50;
+      const dipOpportunity = (s1w <= 34 && s1y >= 58);
+      const sat3 = {
+        tone: dipOpportunity ? "green" : (s1y >= 58 ? "yellow" : "red"),
+        highlight: dipOpportunity ? "highlight-bull" : "",
+        main: dipOpportunity ? "🟢 Rücksetzer-Fenster" : `Zone 1: ${fmtNum(price * drops[0], dec)} ${cur}`,
+        sub: `1Y-Basis: ${s1y}/100 (${s1y >= 58 ? "intakt" : "schwach"})`,
+        rows: [
+          [`Rücksetzer-Zone 1 (${asset.profile === "crypto" ? "-15 %" : "-6 %"})`, `${fmtNum(price * drops[0], dec)} ${cur}`],
+          [`Rücksetzer-Zone 2 (${asset.profile === "crypto" ? "-25 %" : "-12 %"})`, `${fmtNum(price * drops[1], dec)} ${cur}`],
+          [`Tief-Zone 3 (${asset.profile === "crypto" ? "-35 %" : "-18 %"})`, `${fmtNum(price * drops[2], dec)} ${cur}`]
+        ],
+        note: "Statistische Abstandsmarken unter dem aktuellen Referenzkurs zur Orientierung bei Marktrücksetzern."
+      };
+
+      // Sat 4: Haltefrist & Cash
+      let holdDays = 0;
+      if (pos.buyDate) {
+        holdDays = Math.max(0, Math.floor((Date.now() - new Date(pos.buyDate).getTime()) / 86400000));
+      }
+      const isOverYear = holdDays >= 365;
+      const sat4 = {
+        tone: (asset.profile === "crypto" && pos.buyDate && isOverYear) ? "green" : "yellow",
+        main: `${fmtNum(state.cashReserveEur, 0)} EUR Cash`,
+        sub: pos.buyDate ? `Haltedauer: ${holdDays} Tage` : "Kaufdatum nicht gesetzt",
+        rows: [
+          ["Freie Bar-Reserve (Cash)", `${fmtNum(state.cashReserveEur, 0)} EUR`],
+          ["Hinterlegtes Kaufdatum", pos.buyDate || "Nicht eingetragen"],
+          ["Haltedauer", pos.buyDate ? `${holdDays} Tage (${isOverYear ? "> 1 Jahr" : (365 - holdDays) + " Tage bis 1 Jahr"})` : "-"]
+        ],
+        note: "Reine Anzeige deiner hinterlegten Haltedauer und Bar-Reserve (keine steuerliche Beratung)."
+      };
+
+      return { 1: sat1, 2: sat2, 3: sat3, 4: sat4 };
+    }
+
+    function toneToCss(t) {
+      if (t === "green") return "var(--green)";
+      if (t === "red") return "var(--red)";
+      return "var(--yellow)";
     }
 
     function renderAll() {
-      document.getElementById("demo-banner").style.display = portfolio.isDemo ? "flex" : "none";
-
       if (!window.LIVE_COMPASS_DATA) {
         document.getElementById("error-box").style.display = "block";
         return;
@@ -944,150 +919,63 @@
       const asset = assets[selectedAsset];
       const hObj = HORIZONS.find(h => h.id === selectedHorizon);
       const score = asset.scores[selectedHorizon] ?? 50;
-      const regime = getRegimeMeta(score, selectedHorizon);
+      const zone = getZoneInfo(score, selectedHorizon);
 
-      document.getElementById("last-updated").textContent = `Datenstand ${DATA.version} · ${DATA.updated_at}`;
-      renderPortfolioStripAndBenchmark(DATA);
+      document.getElementById("last-updated").textContent = `${DATA.version} · ${DATA.updated_at}`;
 
+      // Asset & Horizon Pills
       document.getElementById("asset-buttons").innerHTML = Object.keys(assets).map(id => `
         <button class="pill ${id === selectedAsset ? "active" : ""}" onclick="selectAsset('${id}')">${id}</button>
       `).join("");
-
       document.getElementById("horizon-buttons").innerHTML = HORIZONS.map(h => `
         <button class="pill ${h.id === selectedHorizon ? "active" : ""}" onclick="selectHorizon('${h.id}')">${h.label}</button>
       `).join("");
 
+      // Hub Center
       document.getElementById("hub-meta").textContent = `${asset.name} (${asset.id}) · Horizont: ${hObj.label}`;
       document.getElementById("hub-price").textContent = `Referenzkurs: ${fmtPrice(asset.price, asset.currency)}`;
-
       const scoreEl = document.getElementById("hub-score");
       scoreEl.textContent = score;
-      scoreEl.style.color = regime.color;
+      scoreEl.style.color = zone.color;
 
-      const badge = document.getElementById("hub-badge");
-      badge.textContent = regime.label;
-      badge.style.color = regime.color;
-      badge.style.background = regime.bg;
+      const badgeEl = document.getElementById("hub-badge");
+      badgeEl.textContent = zone.badge;
+      badgeEl.style.color = zone.color;
+      badgeEl.style.background = zone.bg;
 
-      document.getElementById("hub-advice").textContent = regime.advice;
+      document.getElementById("score-marker").style.left = `${score}%`;
+      document.getElementById("hub-advice").textContent = zone.text;
 
-      const p = asset.pillars || {};
-      const pillarItems = [
-        { label: "Makro & Liquidität", data: p.macro },
-        { label: "Trend & Struktur",   data: p.trend },
-        { label: asset.profile === "crypto" ? "Rel. Stärke & Vol." : "Kupfer/Gold & Vol.", data: p.rel_vol },
-        { label: "Bewertung & Risiko", data: p.valuation }
-      ];
-      document.getElementById("pillar-grid").innerHTML = pillarItems.map(item => {
-        const st = item.data ? item.data.status : "Neutral";
-        const tone = item.data ? `tone-${item.data.tone}` : "tone-neutral";
-        return `
-          <div class="pillar-badge">
-            <span class="pillar-name">${item.label}</span>
-            <span class="pillar-state ${tone}">${st}</span>
+      // Mini Satellites
+      const sats = computeSatelliteData(asset, score);
+      [1, 2, 3, 4].forEach(idx => {
+        const s = sats[idx];
+        const card = document.getElementById(`mini-sat-${idx}`);
+        card.className = `mini-sat ${s.highlight || ""}`;
+        document.getElementById(`dot-${idx}`).style.background = toneToCss(s.tone);
+        document.getElementById(`mval-${idx}`).textContent = s.main;
+        document.getElementById(`msub-${idx}`).textContent = s.sub;
+      });
+
+      // Signals Drawer
+      document.getElementById("signals-grid").innerHTML = (asset.signals || []).map(sig => `
+        <div class="sig-card">
+          <div class="sig-head">
+            <span>${sig.title}</span>
+            <span style="color:${sig.score >= 68 ? "var(--green)" : (sig.score >= 45 ? "var(--yellow)" : "var(--red)")};">${sig.score}/100</span>
           </div>
-        `;
-      }).join("");
+          <div class="sig-body">${sig.summary}</div>
+        </div>
+      `).join("");
 
-      renderSatellites(asset, score);
       renderChart(DATA, asset);
-      renderSignals(DATA, asset);
-    }
-
-    function renderSatellites(asset, score) {
-      const pos = portfolio.positions[asset.id] || { qty: 0, avgPrice: 0, buyDate: "" };
-      const cur = asset.currency;
-      const price = asset.price || 0;
-      const hasPos = pos.qty > 0 && pos.avgPrice > 0 && price > 0;
-      const pnlPct = hasPos ? ((price / pos.avgPrice) - 1.0) * 100.0 : 0;
-      const posVal = hasPos ? pos.qty * price : 0;
-      const dec = price < 2 ? 4 : 2;
-
-      // SATELLIT 1: Reine Positions- & Einstands-Mathematik
-      const s1Tag = document.getElementById("sat1-tag");
-      if (!hasPos) {
-        s1Tag.textContent = "Kein Bestand";
-        s1Tag.className = "sat-tag tone-neutral";
-        document.getElementById("sat1-body").innerHTML = `
-          <div class="kv-row"><span class="kv-label">Hinterlegter Bestand</span><span class="kv-val">0</span></div>
-          <div class="kv-row"><span class="kv-label">Aktueller Referenzkurs</span><span class="kv-val">${fmtPrice(price, cur)}</span></div>
-        `;
-        document.getElementById("sat1-note").textContent = "Keine Position hinterlegt. Daten können oben über CSV oder OCR lokal ergänzt werden.";
-      } else {
-        const inProfit = pnlPct >= 0;
-        s1Tag.textContent = `${pnlPct >= 0 ? "+" : ""}${fmtNum(pnlPct, 1)} %`;
-        s1Tag.className = `sat-tag ${inProfit ? "tone-bull" : "tone-bear"}`;
-        const beDiff = ((pos.avgPrice / price) - 1.0) * 100.0;
-        document.getElementById("sat1-body").innerHTML = `
-          <div class="kv-row"><span class="kv-label">Bestand / Wert</span><span class="kv-val">${fmtNum(pos.qty, pos.qty < 10 ? 4 : 2)} · ${fmtNum(posVal, 0)} ${cur}</span></div>
-          <div class="kv-row"><span class="kv-label">Ø Einstandskurs</span><span class="kv-val">${fmtNum(pos.avgPrice, dec)} ${cur}</span></div>
-          <div class="kv-row"><span class="kv-label">Differenz zum Einstand</span><span class="kv-val">${inProfit ? "+" + fmtNum(pnlPct, 1) + " % über Einstand" : "+" + fmtNum(beDiff, 1) + " % bis Einstand"}</span></div>
-        `;
-        document.getElementById("sat1-note").textContent = "Rechnerische Differenz zwischen aktuellem Referenzkurs und deinem hinterlegten Einstandskurs.";
-      }
-
-      // SATELLIT 2: Nutzer-Taschenrechner für Aufwärts-Kursmarken
-      const baseRef = pos.avgPrice > 0 ? Math.max(pos.avgPrice, price) : price;
-      const u1 = (portfolio.calcUp1Pct || 25) / 100.0;
-      const mults = [1 + u1, 1 + u1 * 2.5, 1 + u1 * 5.0];
-      const s2Tag = document.getElementById("sat2-tag");
-      s2Tag.textContent = score >= 70 ? "Score ≥ 70" : (hasPos && pnlPct < 0 ? `${fmtNum(pnlPct, 1)} % vs. Einstand` : "Rechner aktiv");
-      s2Tag.className = `sat-tag ${score >= 70 ? "tone-bull" : "tone-neutral"}`;
-
-      document.getElementById("sat2-body").innerHTML = `
-        <div class="kv-row"><span class="kv-label">Marke 1 (+${Math.round(u1*100)} %)</span><span class="kv-val">${fmtNum(baseRef * mults[0], dec)} ${cur}</span></div>
-        <div class="kv-row"><span class="kv-label">Marke 2 (+${Math.round(u1*250)} %)</span><span class="kv-val">${fmtNum(baseRef * mults[1], dec)} ${cur}</span></div>
-        <div class="kv-row"><span class="kv-label">Marke 3 (+${Math.round(u1*500)} %)</span><span class="kv-val">${fmtNum(baseRef * mults[2], dec)} ${cur}</span></div>
-      `;
-      document.getElementById("sat2-note").textContent = "Prozentuale Aufwärts-Schwellen auf Basis deines Einstands bzw. Referenzkurses (frei anpassbar).";
-
-      // SATELLIT 3: Nutzer-Taschenrechner für Abwärts-Schwellen + Perzentil-Status
-      const d1 = (portfolio.calcDn1Pct || 15) / 100.0;
-      const drops = [1 - d1, Math.max(0.1, 1 - d1 * 1.66), Math.max(0.05, 1 - d1 * 2.33)];
-      const s1w = asset.scores["1w"] ?? 50;
-      const s1y = asset.scores["1y"] ?? 50;
-      const divergenceHigh = (s1w <= 32 && s1y >= 58);
-
-      const s3Tag = document.getElementById("sat3-tag");
-      if (divergenceHigh) {
-        s3Tag.textContent = "1W tief / 1Y hoch";
-        s3Tag.className = "sat-tag tone-bull";
-      } else {
-        s3Tag.textContent = `1Y-Score: ${s1y}/100`;
-        s3Tag.className = `sat-tag ${s1y >= 60 ? "tone-neutral" : "tone-bear"}`;
-      }
-
-      document.getElementById("sat3-body").innerHTML = `
-        <div class="kv-row"><span class="kv-label">Schwelle 1 (-${Math.round(d1*100)} %)</span><span class="kv-val">${fmtNum(price * drops[0], dec)} ${cur}</span></div>
-        <div class="kv-row"><span class="kv-label">Schwelle 2 (-${Math.round((1-drops[1])*100)} %)</span><span class="kv-val">${fmtNum(price * drops[1], dec)} ${cur}</span></div>
-        <div class="kv-row"><span class="kv-label">Schwelle 3 (-${Math.round((1-drops[2])*100)} %)</span><span class="kv-val">${fmtNum(price * drops[2], dec)} ${cur}</span></div>
-      `;
-      document.getElementById("sat3-note").textContent = `Statistische Einordnung: 1W-Score (${s1w}/100) vs. 1Y-Score (${s1y}/100). Prozent-Abstände sind im Modal frei konfigurierbar.`;
-
-      // SATELLIT 4: Reine Haltedauer (Kalendertage) & Kapital-Allokation (0 % Steuer-Aussagen)
-      let holdDays = 0;
-      if (pos.buyDate) {
-        const diffMs = Date.now() - new Date(pos.buyDate).getTime();
-        holdDays = Math.max(0, Math.floor(diffMs / 86400000));
-      }
-      const s4Tag = document.getElementById("sat4-tag");
-      s4Tag.textContent = pos.buyDate ? `${holdDays} Kalendertage` : "Datum offen";
-      s4Tag.className = "sat-tag tone-neutral";
-
-      document.getElementById("sat4-body").innerHTML = `
-        <div class="kv-row"><span class="kv-label">Haltedauer (seit Datum)</span><span class="kv-val">${pos.buyDate ? holdDays + " Tage (" + pos.buyDate + ")" : "Nicht hinterlegt"}</span></div>
-        <div class="kv-row"><span class="kv-label">Dry-Powder Reserve</span><span class="kv-val">${fmtNum(portfolio.cashReserveEur, 0)} EUR</span></div>
-        <div class="kv-row"><span class="kv-label">Sektor-Zielquote</span><span class="kv-val">${portfolio.pivotTargetPct} %</span></div>
-      `;
-      document.getElementById("sat4-note").textContent = "Reine Kalendertag- und Allokations-Übersicht auf Basis deiner hinterlegten Portfoliodaten.";
     }
 
     function renderChart(DATA, asset) {
       const svg = document.getElementById("horizon-chart");
-      document.getElementById("legend-asset").textContent = asset.id;
-
-      const padL = 36, padR = 24, padT = 20, padB = 30;
-      const width = 540, height = 195;
+      const bmChoice = document.getElementById("bm-select").value;
+      const padL = 32, padR = 20, padT = 16, padB = 24;
+      const width = 520, height = 155;
       const plotW = width - padL - padR;
       const plotH = height - padT - padB;
 
@@ -1103,444 +991,235 @@
         score: asset.scores[h.id] ?? 50
       }));
 
-      const bm = DATA.benchmark || { "1w": 50, "1m": 50, "1y": 52, "5y": 54 };
-      const bmPts = HORIZONS.map(h => ({ x: getX(h.days), y: getY(bm[h.id] ?? 50) }));
+      let bmScores = DATA.benchmark || { "1w": 50, "1m": 50, "1y": 52, "5y": 54 };
+      if (bmChoice !== "macro" && DATA.assets[bmChoice]) {
+        bmScores = DATA.assets[bmChoice].scores;
+      }
+      const bmPts = HORIZONS.map(h => ({ x: getX(h.days), y: getY(bmScores[h.id] ?? 50) }));
 
       let html = "";
       [0, 45, 70, 100].forEach(v => {
         const y = getY(v);
-        html += `<line x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}" stroke="${v === 70 ? "#1f3a33" : "#1b263b"}" stroke-width="1" />`;
-        html += `<text x="${padL - 7}" y="${y + 3}" fill="#7f91ad" font-size="10" text-anchor="end">${v}</text>`;
+        html += `<line x1="${padL}" y1="${y}" x2="${width - padR}" y2="${y}" stroke="${v === 70 ? "#184739" : "#192438"}" stroke-width="1" />`;
+        html += `<text x="${padL - 6}" y="${y + 3}" fill="#7f91ad" font-size="9.5" text-anchor="end">${v}</text>`;
       });
 
       pts.forEach(pt => {
         const sel = pt.h.id === selectedHorizon;
-        html += `<line x1="${pt.x}" y1="${padT}" x2="${pt.x}" y2="${height - padB}" stroke="${sel ? "#3b82f6" : "#172033"}" stroke-width="${sel ? 1.5 : 1}" />`;
-        html += `<text x="${pt.x}" y="${height - 10}" fill="${sel ? "#ffffff" : "#8a9bb5"}" font-size="11" font-weight="${sel ? "700" : "500"}" text-anchor="middle">${pt.h.label}</text>`;
+        html += `<line x1="${pt.x}" y1="${padT}" x2="${pt.x}" y2="${height - padB}" stroke="${sel ? "#3b82f6" : "#151e30"}" stroke-width="${sel ? 1.5 : 1}" />`;
+        html += `<text x="${pt.x}" y="${height - 7}" fill="${sel ? "#ffffff" : "#8a9bb5"}" font-size="10.5" font-weight="${sel ? "700" : "500"}" text-anchor="middle">${pt.h.label}</text>`;
       });
 
       const bmPath = bmPts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
-      html += `<path d="${bmPath}" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="4,4" />`;
+      html += `<path d="${bmPath}" fill="none" stroke="#64748b" stroke-width="1.6" stroke-dasharray="4,4" />`;
 
       const mainPath = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
-      html += `<path d="${mainPath}" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`;
+      html += `<path d="${mainPath}" fill="none" stroke="#3b82f6" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />`;
 
       pts.forEach(pt => {
         const sel = pt.h.id === selectedHorizon;
         html += `
           <g style="cursor:pointer" onclick="selectHorizon('${pt.h.id}')">
-            <circle cx="${pt.x}" cy="${pt.y}" r="${sel ? 7 : 5}" fill="${sel ? "#3b82f6" : "#0d1422"}" stroke="#3b82f6" stroke-width="2.5" />
-            <text x="${pt.x}" y="${pt.y - 10}" fill="#eaf0fa" font-size="11" font-weight="800" text-anchor="middle">${pt.score}</text>
+            <circle cx="${pt.x}" cy="${pt.y}" r="${sel ? 6.5 : 4.5}" fill="${sel ? "#3b82f6" : "#0b111e"}" stroke="#3b82f6" stroke-width="2.3" />
+            <text x="${pt.x}" y="${pt.y - 9}" fill="#eef3fb" font-size="10.5" font-weight="800" text-anchor="middle">${pt.score}</text>
           </g>
         `;
       });
       svg.innerHTML = html;
-
-      const s1w = pts[0].score;
-      const s5y = pts[pts.length - 1].score;
-      let diag = "";
-      if (s5y - s1w >= 12) diag = `Steigende Horizont-Kurve (${s1w} → ${s5y}): Kurzfristig niedrigeres Perzentil als im Mehrjahresfenster.`;
-      else if (s1w - s5y >= 12) diag = `Fallende Horizont-Kurve (${s1w} → ${s5y}): Kurzfristig höheres Momentum-Perzentil als im Langfrist-Fenster.`;
-      else diag = `Flache Horizont-Kurve (${s1w} → ${s5y}): Gleichmäßiges Regime-Perzentil über alle Zeithorizonte.`;
-      document.getElementById("chart-diag").textContent = diag;
     }
 
-    function renderSignals(DATA, asset) {
-      const m = DATA.macro_summary || {};
-      document.getElementById("macro-strip").textContent =
-        `M2 ${m.m2_yoy >= 0 ? "+" : ""}${m.m2_yoy ?? "-"} % · HY ${m.hy_spread ?? "-"} % · USD/JPY ${m.usdjpy ?? "-"} · VIX ${m.vix ?? "-"} · F&G ${m.fng ?? "-"}`;
+    // --- SATELLITE DETAIL & RULE MODAL ---
+    window.openSatModal = function(idx) {
+      activeSatModal = idx;
+      const asset = window.LIVE_COMPASS_DATA.assets[selectedAsset];
+      const score = asset.scores[selectedHorizon] ?? 50;
+      const sats = computeSatelliteData(asset, score);
+      const s = sats[idx];
 
-      document.getElementById("signals-grid").innerHTML = (asset.signals || []).map(sig => `
-        <div class="sig-card">
-          <div class="sig-top">
-            <span class="sig-title"><span class="dot" style="background:${dotColor(sig.score)}"></span>${sig.title}</span>
-            <span class="sig-score">${sig.score}/100</span>
-          </div>
-          <div class="sig-text">${sig.summary}</div>
-        </div>
+      const titles = {
+        1: `1 · Positions- & Break-Even-Monitor (${asset.id})`,
+        2: `2 · Persönlicher Gewinn-Korridor (${asset.id})`,
+        3: `3 · Rücksetzer- & Abstands-Radar (${asset.id})`,
+        4: `4 · Haltefrist & Bar-Reserve`
+      };
+      document.getElementById("sat-modal-title").textContent = titles[idx];
+      document.getElementById("sat-modal-desc").textContent = s.note;
+
+      document.getElementById("sat-modal-body").innerHTML = s.rows.map(r => `
+        <div class="kv-row"><span class="kv-label">${r[0]}</span><span class="kv-val">${r[1]}</span></div>
       `).join("");
-    }
 
-    // =========================================================================
-    // PHASE A: TOP-10 EUROPÄISCHE BROKER CSV-PARSER (100 % CLIENT-SIDE)
-    // =========================================================================
-    const KNOWN_ALIASES = {
-      "BITCOIN": "BTC", "BTC": "BTC", "XBT": "BTC", "XF000BTC0017": "BTC",
+      const settingsEl = document.getElementById("sat-modal-settings");
+      const saveBtn = document.getElementById("sat-modal-save");
+      if (idx === 2) {
+        settingsEl.innerHTML = `
+          <div class="form-row">
+            <div class="field">
+              <label>Deine Gewinn-Zielmarke Krypto (%)</label>
+              <input type="number" id="rule-tp-crypto" value="${state.tpTargetCryptoPct}" />
+            </div>
+            <div class="field">
+              <label>Deine Gewinn-Zielmarke Aktien/ETF/Gold (%)</label>
+              <input type="number" id="rule-tp-tradfi" value="${state.tpTargetTradfiPct}" />
+            </div>
+          </div>
+        `;
+        saveBtn.style.display = "inline-block";
+      } else {
+        settingsEl.innerHTML = "";
+        saveBtn.style.display = "none";
+      }
+      document.getElementById("sat-modal").classList.add("open");
+    };
+
+    window.closeSatModal = function() {
+      document.getElementById("sat-modal").classList.remove("open");
+    };
+
+    window.saveSatSettings = function() {
+      state.tpTargetCryptoPct = parseFloat(document.getElementById("rule-tp-crypto").value) || 30;
+      state.tpTargetTradfiPct = parseFloat(document.getElementById("rule-tp-tradfi").value) || 18;
+      saveState();
+      closeSatModal();
+      renderAll();
+    };
+
+    // --- PORTFOLIO & UNIVERSAL CSV/OCR IMPORTER ---
+    const ALIAS_MAP = {
+      "BITCOIN": "BTC", "BTC": "BTC", "XF000BTC0017": "BTC",
+      "ETHEREUM": "ETH", "ETH": "ETH", "XF000ETH0018": "ETH",
+      "SOLANA": "SOL", "SOL": "SOL", "XF000SOL0019": "SOL",
       "CARDANO": "ADA", "ADA": "ADA",
       "SUI": "SUI",
       "AVALANCHE": "AVAX", "AVAX": "AVAX",
       "MIDNIGHT": "NIGHT", "NIGHT": "NIGHT",
+      "MSCI": "MSCI", "MSCI WORLD": "MSCI", "EUNL": "MSCI", "EUNL.DE": "MSCI", "IE00B4L5Y983": "MSCI", "IWDA": "MSCI",
+      "NVIDIA": "NVDA", "NVDA": "NVDA", "US67066G1040": "NVDA",
       "VUSION": "VU.PA", "VUSIONGROUP": "VU.PA", "VU.PA": "VU.PA", "FR0010282822": "VU.PA",
-      "GOLD": "GOLD", "XAU": "GOLD", "XAUUSD": "GOLD", "DE000A0S9GB0": "GOLD", "IE00B4ND3602": "GOLD", "JE00B1VS3770": "GOLD",
-      "ETHEREUM": "ETH", "ETH": "ETH",
-      "SOLANA": "SOL", "SOL": "SOL"
+      "GOLD": "GOLD", "XAU": "GOLD", "DE000A0S9GB0": "GOLD"
     };
 
-    function matchKnownTicker(rawText) {
-      if (!rawText) return null;
-      const upper = String(rawText).toUpperCase();
-      for (const [alias, ticker] of Object.entries(KNOWN_ALIASES)) {
-        const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const rx = new RegExp(`(^|[^A-Z0-9])${escaped}([^A-Z0-9]|$)`);
-        if (rx.test(upper)) return ticker;
-      }
-      return null;
-    }
+    window.openImportModal = function() {
+      const pos = state.positions[selectedAsset] || { qty: 0, avgPrice: 0, buyDate: "" };
+      document.getElementById("imp-lbl-qty").textContent = `Bestand ${selectedAsset} (Stück / Coins)`;
+      document.getElementById("imp-lbl-avg").textContent = `Ø Einstand ${selectedAsset}`;
+      document.getElementById("imp-qty").value = pos.qty || "";
+      document.getElementById("imp-avg").value = pos.avgPrice || "";
+      document.getElementById("imp-date").value = pos.buyDate || "";
+      document.getElementById("imp-cash").value = state.cashReserveEur || "";
+      document.getElementById("import-modal").classList.add("open");
+    };
 
-    function parseLocaleNumber(token) {
-      if (token === null || token === undefined) return NaN;
-      let s = String(token).replace(/[^\d.,-]/g, "").trim();
-      if (!s || s === "-" || s === "." || s === ",") return NaN;
+    window.closeImportModal = function() {
+      document.getElementById("import-modal").classList.remove("open");
+    };
+
+    window.loadBetaSample = function() {
+      state = JSON.parse(JSON.stringify(BETA_SAMPLE));
+      saveState();
+      openImportModal();
+      renderAll();
+    };
+
+    function parseSmartNumber(str) {
+      let s = String(str).replace(/[^\d.,-]/g, "");
+      if (!s) return NaN;
       if (s.includes(",") && s.includes(".")) {
-        if (s.lastIndexOf(",") > s.lastIndexOf(".")) {
-          s = s.replace(/\./g, "").replace(",", ".");
-        } else {
-          s = s.replace(/,/g, "");
-        }
+        s = (s.lastIndexOf(",") > s.lastIndexOf(".")) ? s.replace(/\./g, "").replace(",", ".") : s.replace(/,/g, "");
       } else if (s.includes(",")) {
         s = s.replace(",", ".");
       }
       return parseFloat(s);
     }
 
-    function parseDateAny(rawDate, fallback) {
-      if (!rawDate) return fallback;
-      const s = String(rawDate).trim();
-      const mIso = s.match(/(\d{4})-(\d{2})-(\d{2})/);
-      if (mIso) return `${mIso[1]}-${mIso[2]}-${mIso[3]}`;
-      const mEu = s.match(/(\d{2})[./-](\d{2})[./-](\d{4})/);
-      if (mEu) return `${mEu[3]}-${mEu[2]}-${mEu[1]}`;
-      return fallback;
-    }
-
-    function detectBroker(headerLine, fullText) {
-      const h = headerLine.toLowerCase();
-      if (h.includes("open rate") && (h.includes("units") || h.includes("amount"))) return "eToro";
-      if (h.includes("valuta") && h.includes("nominale")) return "Scalable Capital";
-      if (h.includes("handelsplatz") && h.includes("einstandskurs")) return "Flatex";
-      if (h.includes("einstandskurs") && (h.includes("stück") || h.includes("bezeichnung"))) return "DADAT Bank";
-      if (h.includes("symbol") && (h.includes("cost basis") || h.includes("tradeprice") || h.includes("openprice"))) return "Interactive Brokers (IBKR)";
-      if (h.includes("amount asset") && h.includes("asset market price")) return "Bitpanda";
-      if (h.includes("produkt") && (h.includes("schlusskurs") || h.includes("anzahl"))) return "Degiro";
-      if (h.includes("price per share") || (h.includes("ticker") && h.includes("total amount"))) return "Revolut";
-      if (h.includes("isin") && h.includes("wertpapier") && h.includes("stück")) return "Smartbroker+";
-      if (h.includes("isin") && (h.includes("anteile") || h.includes("ausführungskurs"))) return "Trade Republic";
-      return "Universeller CSV-Parser";
-    }
-
-    function parseBrokerCsvText(csvText) {
-      const lines = csvText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-      if (lines.length === 0) return { broker: "Unbekannt", rows: [] };
-
-      const first = lines[0];
-      const cSemi = (first.match(/;/g) || []).length;
-      const cComma = (first.match(/,/g) || []).length;
-      const cTab = (first.match(/\t/g) || []).length;
-      const sep = (cTab > cSemi && cTab > cComma) ? "\t" : (cSemi >= cComma ? ";" : ",");
-
-      const broker = detectBroker(first, csvText);
-      const headers = first.split(sep).map(c => c.replace(/^["']|["']$/g, "").trim().toLowerCase());
-      const todayIso = new Date().toISOString().slice(0, 10);
-
-      const findCol = patterns => headers.findIndex(col => patterns.some(rx => rx.test(col)));
-
-      const colIsin   = findCol([/\bisin\b/, /\bwkn\b/]);
-      const colAsset  = findCol([/action/, /instrument/, /ticker/, /symbol/, /asset/, /coin/, /produkt/, /bezeichnung/, /wertpapier/, /name/]);
-      const colQty    = findCol([/units/, /einheiten/, /amount asset/, /stück/, /stueck/, /anteile/, /anzahl/, /quantity/, /\bqty\b/, /nominale/, /bestand/]);
-      const colInvest = findCol([/^amount$/, /investiert/, /invested/, /betrag/, /total amount/, /kurswert/]);
-      const colPrice  = findCol([/open rate/, /startpreis/, /einstandskurs/, /einstand/, /asset market price/, /cost basis/, /tradeprice/, /openprice/, /ausführungskurs/, /price per share/, /average price/, /schlusskurs/, /kaufkurs/, /\bkurs\b/, /\bprice\b/]);
-      const colDate   = findCol([/open date/, /eröffnungszeit/, /timestamp/, /datum/, /valuta/, /date/, /zeit/]);
-      const colType   = findCol([/typ/, /type/, /transaction type/, /aktion/, /side/]);
-
-      const hasHeader = (colIsin !== -1 || colAsset !== -1 || colQty !== -1 || colPrice !== -1);
-      const startIdx = hasHeader ? 1 : 0;
-      const aggregated = {};
-
-      for (let i = startIdx; i < lines.length; i++) {
-        const cols = lines[i].split(sep).map(c => c.replace(/^["']|["']$/g, "").trim());
-        if (cols.length < 2) continue;
-
-        if (colType !== -1 && cols[colType]) {
-          const tx = cols[colType].toLowerCase();
-          if (/(zinsen|interest|dividend|fee|gebühr|deposit|einzahlung|withdrawal|sell|verkauf)/.test(tx)) continue;
-        }
-
-        let ticker = (colIsin !== -1 && cols[colIsin]) ? matchKnownTicker(cols[colIsin]) : null;
-        if (!ticker && colAsset !== -1 && cols[colAsset]) ticker = matchKnownTicker(cols[colAsset]);
-        if (!ticker) ticker = matchKnownTicker(lines[i]);
-        if (!ticker) continue;
-
-        let qty = (colQty !== -1 && cols[colQty]) ? parseLocaleNumber(cols[colQty]) : NaN;
-        let price = (colPrice !== -1 && cols[colPrice]) ? parseLocaleNumber(cols[colPrice]) : NaN;
-        const invest = (colInvest !== -1 && cols[colInvest]) ? parseLocaleNumber(cols[colInvest]) : NaN;
-
-        if ((isNaN(qty) || qty <= 0) && !isNaN(invest) && !isNaN(price) && price > 0) qty = invest / price;
-        if ((isNaN(price) || price <= 0) && !isNaN(invest) && !isNaN(qty) && qty > 0) price = invest / qty;
-        if (!isNaN(invest) && !isNaN(price) && price > 0 && !isNaN(qty)) {
-          const expQty = invest / price;
-          if (Math.abs(qty - invest) < 1e-4 && Math.abs(expQty - qty) > 0.01) qty = expQty;
-        }
-
-        if (isNaN(qty) || qty <= 0) continue;
-        if (isNaN(price) || price < 0) price = 0;
-
-        const dt = parseDateAny(colDate !== -1 ? cols[colDate] : "", todayIso);
-
-        if (!aggregated[ticker]) {
-          aggregated[ticker] = { qty, totalCost: qty * price, earliestDate: dt };
-        } else {
-          aggregated[ticker].qty += qty;
-          aggregated[ticker].totalCost += qty * price;
-          if (dt < aggregated[ticker].earliestDate) aggregated[ticker].earliestDate = dt;
-        }
+    function matchTickerInLine(upperLine) {
+      for (const [key, ticker] of Object.entries(ALIAS_MAP)) {
+        if (upperLine.includes(key)) return ticker;
       }
-
-      const rows = Object.entries(aggregated).map(([ticker, d]) => {
-        const avg = d.qty > 0 ? (d.totalCost / d.qty) : 0;
-        return `${ticker};${Number(d.qty.toFixed(6))};${Number(avg.toFixed(4))};${d.earliestDate}`;
-      });
-
-      return { broker, rows };
+      return null;
     }
 
-    window.handleCsvFile = function(file) {
+    window.handleUniversalFile = async function(file) {
       if (!file) return;
-      const statusEl = document.getElementById("csv-status");
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const res = parseBrokerCsvText(e.target.result || "");
-        if (res.rows.length > 0) {
-          const box = document.getElementById("inp-csv");
-          box.value = (box.value ? box.value.trim() + "\n" : "") + res.rows.join("\n");
-          statusEl.textContent = `Erkannt: ${res.broker} · ${res.rows.length} Position(en)`;
-        } else {
-          statusEl.textContent = `${res.broker}: Keine bekannten Kompass-Assets gefunden.`;
+      const statusEl = document.getElementById("imp-status");
+      if (file.type.startsWith("image/")) {
+        statusEl.textContent = "Lese Screenshot lokal im Browser aus...";
+        if (typeof Tesseract === "undefined") {
+          statusEl.textContent = "OCR nicht verfügbar – bitte CSV-Datei nutzen.";
+          return;
         }
-      };
-      reader.readAsText(file, "UTF-8");
-    };
-
-    // Selbsttest für alle 10 europäischen Broker direkt im Browser
-    window.run10BrokerSelfTest = function() {
-      const samples = [
-        ["DADAT Bank", "ISIN;Bezeichnung;Stück;Einstandskurs;Kaufdatum\nFR0010282822;VUSIONGROUP EO 2;15;142,50;14.03.2025"],
-        ["eToro", "Action,Amount,Units,Open Rate,Open Date\nBuy AVAX,$500.00,22.83105,21.90,04/08/2025\nInterest Paid,$0.66,,,01/11/2026"],
-        ["Trade Republic", "Datum;Typ;ISIN;Produkt;Anteile;Ausführungskurs\n2025-02-10;Kauf;FR0010282822;VusionGroup;8,5;138,20\n2025-05-12;Kauf;FR0010282822;VusionGroup;6,5;148,00"],
-        ["Scalable Capital", "Valuta;Typ;ISIN;Wertpapier;Nominale;Kurs\n15.04.2025;Kauf;IE00B4ND3602;iShares Physical Gold;25;48,60"],
-        ["Interactive Brokers (IBKR)", "Symbol,Quantity,Cost Basis Price,OpenDateTime\nBTC,0.15,64200.50,2025-01-20 14:22:00"],
-        ["Bitpanda", "Timestamp,Transaction Type,Asset,Amount Asset,Asset market price\n2024-06-15T10:00:00Z,buy,Cardano,12000,0.45"],
-        ["Flatex", "Datum;ISIN;Bezeichnung;Handelsplatz;Stück;Einstandskurs\n18.06.2025;FR0010282822;VUSIONGROUP SA;XETRA;12;144,80"],
-        ["Degiro", "Datum;Produkt;ISIN;Anzahl;Schlusskurs\n03-04-2025;VusionGroup;FR0010282822;10;140,00"],
-        ["Smartbroker+", "Datum;ISIN;Wertpapier;Stück;Kurs\n2025-07-01;DE000A0S9GB0;Xetra-Gold;15;81,20"],
-        ["Revolut", "Date,Ticker,Type,Quantity,Price per share,Total Amount\n2025-08-19 11:15:00,AVAX,BUY - MARKET,42.16895,16.50,695.79"]
-      ];
-      const out = samples.map(([name, csv]) => {
-        const r = parseBrokerCsvText(csv);
-        const ok = r.rows.length > 0;
-        return `${ok ? "[OK]" : "[FEHLER]"} ${name.padEnd(26)} -> ${r.rows.join(" | ")}`;
-      });
-      const logEl = document.getElementById("broker-test-log");
-      logEl.style.display = "block";
-      logEl.textContent = "TOP-10 EUROPÄISCHE BROKER CSV-SELBSTTEST:\n" + out.join("\n");
-    };
-
-    // --- MULTI-ROW TABLE SCREENSHOT OCR (MIT 2X-UPSCALING & ETORO-HEILUNG) ---
-    function preprocessImageForOcr(file) {
-      return new Promise((resolve) => {
-        const img = new Image();
-        const url = URL.createObjectURL(file);
-        img.onload = function() {
-          const scale = img.width < 1400 ? 2 : 1.5;
-          const canvas = document.createElement("canvas");
-          canvas.width = Math.round(img.width * scale);
-          canvas.height = Math.round(img.height * scale);
-          const ctx = canvas.getContext("2d");
-          ctx.filter = "contrast(145%) brightness(112%) grayscale(100%)";
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          URL.revokeObjectURL(url);
-          canvas.toBlob(blob => resolve(blob || file), "image/png");
-        };
-        img.onerror = () => resolve(file);
-        img.src = url;
-      });
-    }
-
-    function extractTableRowsFromOcr(rawText) {
-      const lines = rawText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-      const foundRows = [];
-      const seenTickers = new Set();
-      const todayIso = new Date().toISOString().slice(0, 10);
-      const liveAssets = (window.LIVE_COMPASS_DATA && window.LIVE_COMPASS_DATA.assets) || {};
-
-      lines.forEach(line => {
-        const ticker = matchKnownTicker(line);
-        if (!ticker || seenTickers.has(ticker)) return;
-
-        const isEtoroRow = /\$\s*\d/.test(line) || /kaufen|buy/i.test(line);
-        const lineDate = parseDateAny(line, todayIso);
-        const cleanedLine = line.replace(/[+-]?\d[\d.,]*\s*%/g, " ").replace(/\d{2}[./-]\d{2}[./-]\d{4}/g, " ");
-
-        if (isEtoroRow) {
-          const dollarMatch = cleanedLine.match(/\$\s*([\d.,]+)/);
-          const investUsd = dollarMatch ? parseLocaleNumber(dollarMatch[1]) : NaN;
-          const withoutDollar = cleanedLine.replace(/\$\s*[\d.,]+/g, " ");
-          const nums = (withoutDollar.match(/\d[\d.,]*/g) || []).map(parseLocaleNumber).filter(n => !isNaN(n) && n > 0);
-
+        const res = await Tesseract.recognize(file, "eng+deu");
+        const lines = (res.data.text || "").split(/\r?\n/);
+        const out = [];
+        const today = new Date().toISOString().slice(0, 10);
+        lines.forEach(l => {
+          const t = matchTickerInLine(l.toUpperCase());
+          if (!t) return;
+          const nums = (l.match(/\d[\d.,]*/g) || []).map(parseSmartNumber).filter(n => !isNaN(n) && n > 0);
+          if (nums.length >= 2) out.push(`${t};${nums[0]};${nums[1]};${today}`);
+        });
+        document.getElementById("imp-csv").value = out.join("\n");
+        statusEl.textContent = `${out.length} Zeile(n) aus Bild erkannt.`;
+      } else {
+        const text = await file.text();
+        const lines = text.split(/\r?\n/).filter(Boolean);
+        const out = [];
+        const today = new Date().toISOString().slice(0, 10);
+        lines.forEach(l => {
+          const t = matchTickerInLine(l.toUpperCase());
+          if (!t) return;
+          const cols = l.split(/[;,\t]+/).map(c => c.trim());
+          const nums = cols.map(parseSmartNumber).filter(n => !isNaN(n) && n > 0);
           if (nums.length >= 2) {
-            let units = nums[0];
-            let openRate = nums[1];
-            if (!isNaN(investUsd) && investUsd > 0 && openRate > 0) {
-              const expectedUnits = investUsd / openRate;
-              if (units > expectedUnits * 50) units = Number(expectedUnits.toFixed(6));
-            }
-            seenTickers.add(ticker);
-            foundRows.push(`${ticker};${units};${openRate};${lineDate}`);
-            return;
+            out.push(`${t};${nums[0]};${nums[1]};${today}`);
           }
-        }
-
-        const nums = (cleanedLine.match(/\d[\d.,]*/g) || []).map(parseLocaleNumber).filter(n => !isNaN(n) && n > 0);
-        if (nums.length >= 2) {
-          let qty = nums[0];
-          let avg = nums[1];
-          const refPrice = liveAssets[ticker] ? liveAssets[ticker].price : 0;
-          if (refPrice > 0) {
-            const diff0 = Math.abs(nums[0] - refPrice) / refPrice;
-            const diff1 = Math.abs(nums[1] - refPrice) / refPrice;
-            if (diff0 < 0.65 && diff1 > 1.5) {
-              avg = nums[0];
-              qty = nums[1];
-            }
-          }
-          seenTickers.add(ticker);
-          foundRows.push(`${ticker};${qty};${avg};${lineDate}`);
-        }
-      });
-
-      return foundRows;
-    }
-
-    window.handleOcrFile = async function(file) {
-      if (!file) return;
-      const statusEl = document.getElementById("ocr-status");
-      if (typeof Tesseract === "undefined") {
-        statusEl.textContent = "OCR-Modul offline – bitte CSV-Datei nutzen.";
-        return;
-      }
-      statusEl.textContent = "Optimiere Bild & lese Tabelle lokal...";
-      try {
-        const processed = await preprocessImageForOcr(file);
-        const res = await Tesseract.recognize(processed, "eng+deu");
-        const extracted = extractTableRowsFromOcr((res && res.data && res.data.text) || "");
-        if (extracted.length > 0) {
-          const box = document.getElementById("inp-csv");
-          box.value = (box.value ? box.value.trim() + "\n" : "") + extracted.join("\n");
-          statusEl.textContent = `${extracted.length} Tabellenzeile(n) erkannt!`;
-        } else {
-          statusEl.textContent = "Keine Tabellenzeilen erkannt – ggf. CSV-Export nutzen.";
-        }
-      } catch (err) {
-        statusEl.textContent = "Bild konnte nicht gelesen werden.";
+        });
+        document.getElementById("imp-csv").value = out.join("\n");
+        statusEl.textContent = `${out.length} Position(en) aus CSV erkannt.`;
       }
     };
 
-    function wireDropzone(elId, handler) {
-      const el = document.getElementById(elId);
-      el.addEventListener("dragover", e => { e.preventDefault(); el.classList.add("dragover"); });
-      el.addEventListener("dragleave", () => el.classList.remove("dragover"));
-      el.addEventListener("drop", e => {
-        e.preventDefault();
-        el.classList.remove("dragover");
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) handler(e.dataTransfer.files[0]);
-      });
-    }
-    wireDropzone("csv-dropzone", handleCsvFile);
-    wireDropzone("ocr-dropzone", handleOcrFile);
-
-    window.addEventListener("paste", e => {
-      if (!document.getElementById("portfolio-modal").classList.contains("open")) return;
-      const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-      for (const item of items) {
-        if (item.type.indexOf("image") !== -1) {
-          handleOcrFile(item.getAsFile());
-          break;
-        }
-      }
-    });
-
-    // Modal Functions
-    window.openModal = function() {
-      const pos = portfolio.positions[selectedAsset] || { qty: 0, avgPrice: 0, buyDate: "" };
-      const asset = window.LIVE_COMPASS_DATA ? window.LIVE_COMPASS_DATA.assets[selectedAsset] : { currency: "USD" };
-      document.getElementById("lbl-qty").textContent = `Bestand ${selectedAsset} (Stück / Coins)`;
-      document.getElementById("lbl-avg").textContent = `Ø Einstand ${selectedAsset} (${asset.currency})`;
-      document.getElementById("inp-qty").value = pos.qty || "";
-      document.getElementById("inp-avg").value = pos.avgPrice || "";
-      document.getElementById("inp-date").value = pos.buyDate || "";
-      document.getElementById("inp-cash").value = portfolio.cashReserveEur ?? 0;
-      document.getElementById("inp-pivot").value = portfolio.pivotTargetPct ?? 15;
-      document.getElementById("inp-up1").value = portfolio.calcUp1Pct ?? 25;
-      document.getElementById("inp-dn1").value = portfolio.calcDn1Pct ?? 15;
-      document.getElementById("csv-status").textContent = "Bereit für CSV-Datei";
-      document.getElementById("ocr-status").textContent = "Bereit für Tabellen-Bild";
-      document.getElementById("portfolio-modal").classList.add("open");
-    };
-
-    window.closeModal = function() {
-      document.getElementById("portfolio-modal").classList.remove("open");
-    };
-
-    function readCalculatorInputs() {
-      portfolio.cashReserveEur = parseFloat(document.getElementById("inp-cash").value) || 0;
-      portfolio.pivotTargetPct = parseFloat(document.getElementById("inp-pivot").value) || 15;
-      portfolio.calcUp1Pct = Math.max(1, parseFloat(document.getElementById("inp-up1").value) || 25);
-      portfolio.calcDn1Pct = Math.max(1, Math.min(90, parseFloat(document.getElementById("inp-dn1").value) || 15));
-    }
-
-    window.saveCurrentAssetPortfolio = function() {
-      portfolio.isDemo = false;
-      portfolio.positions[selectedAsset] = {
-        qty: parseFloat(document.getElementById("inp-qty").value) || 0,
-        avgPrice: parseFloat(document.getElementById("inp-avg").value) || 0,
-        buyDate: document.getElementById("inp-date").value || ""
+    window.saveImportAndSingle = function() {
+      state.positions[selectedAsset] = {
+        qty: parseFloat(document.getElementById("imp-qty").value) || 0,
+        avgPrice: parseFloat(document.getElementById("imp-avg").value) || 0,
+        buyDate: document.getElementById("imp-date").value || ""
       };
-      readCalculatorInputs();
-      persistPortfolio(portfolio);
-      closeModal();
-      renderAll();
-    };
+      state.cashReserveEur = parseFloat(document.getElementById("imp-cash").value) || 0;
 
-    window.resetPortfolioDefaults = function() {
-      portfolio = JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO));
-      persistPortfolio(portfolio);
-      openModal();
-      renderAll();
-    };
-
-    window.applyCsvImport = function() {
-      const raw = document.getElementById("inp-csv").value.trim();
-      if (!raw) return;
-      portfolio.isDemo = false;
-      raw.split(/\r?\n/).forEach(line => {
-        const parts = line.split(/[;,\t]+/).map(s => s.trim());
-        if (parts.length >= 3) {
-          const ticker = parts[0].toUpperCase();
-          const qty = parseFloat(parts[1].replace(",", "."));
-          const avg = parseFloat(parts[2].replace(",", "."));
-          const dt = parts[3] || "";
-          if (ticker && !isNaN(qty) && !isNaN(avg)) {
-            portfolio.positions[ticker] = { qty, avgPrice: avg, buyDate: dt };
+      const csvRaw = document.getElementById("imp-csv").value.trim();
+      if (csvRaw) {
+        csvRaw.split(/\r?\n/).forEach(line => {
+          const parts = line.split(/[;,\t]+/).map(s => s.trim());
+          if (parts.length >= 3) {
+            const t = matchTickerInLine(parts[0].toUpperCase()) || parts[0].toUpperCase();
+            const q = parseSmartNumber(parts[1]);
+            const a = parseSmartNumber(parts[2]);
+            const d = parts[3] || "";
+            if (t && !isNaN(q) && !isNaN(a)) {
+              state.positions[t] = { qty: q, avgPrice: a, buyDate: d };
+            }
           }
-        }
-      });
-      readCalculatorInputs();
-      persistPortfolio(portfolio);
-      document.getElementById("inp-csv").value = "";
-      openModal();
+        });
+        document.getElementById("imp-csv").value = "";
+      }
+
+      saveState();
+      closeImportModal();
       renderAll();
     };
 
-    checkLegalGate();
+    // Copy Beta Feedback for WhatsApp/Signal
+    window.copyBetaFeedback = function() {
+      const msg = `Beta-Feedback Regime Kompass (v2.0)\nAsset: ${selectedAsset} | Horizont: ${selectedHorizon}\nWas war gut:\nWas war unklar:`;
+      navigator.clipboard.writeText(msg).then(() => {
+        const btn = document.getElementById("btn-feedback");
+        btn.textContent = "Feedback-Vorlage kopiert ✓";
+        setTimeout(() => { btn.textContent = "Beta-Feedback kopieren"; }, 2500);
+      });
+    };
+
+    checkGate();
     renderAll();
   </script>
 </body>
