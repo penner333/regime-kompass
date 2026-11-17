@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multi-Asset Regime & Horizont Kompass · v2.0</title>
+  <title>Multi-Asset Regime & Horizont Kompass · v2.1</title>
   <script src="live_data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
@@ -23,16 +23,29 @@
       --red: #ef4444;
       --red-soft: rgba(239, 68, 68, 0.16);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at 50% 15%, #111c30 0%, var(--bg) 68%);
+      background: radial-gradient(circle at 50% 14%, #111c30 0%, var(--bg) 68%);
       color: var(--text);
-      line-height: 1.45;
+      line-height: 1.5;
       padding: 14px 12px 44px;
       min-height: 100vh;
+      font-variant-numeric: tabular-nums;
     }
-    .container { max-width: 1120px; margin: 0 auto; }
+
+    .container {
+      max-width: 980px;
+      width: 100%;
+      margin: 0 auto;
+    }
 
     /* Compact Header */
     header {
@@ -45,16 +58,17 @@
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
     }
-    .brand h1 { font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
-    .brand .sub { font-size: 0.75rem; color: var(--muted); }
-    .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .brand h1 { font-size: 1.06rem; font-weight: 800; letter-spacing: -0.02em; }
+    .brand .sub { font-size: 0.74rem; color: var(--muted); }
+    .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
     .status-pill {
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       background: var(--panel);
       border: 1px solid var(--border);
       color: #93c5fd;
       padding: 5px 10px;
       border-radius: 999px;
+      white-space: nowrap;
     }
     .btn-action {
       background: var(--accent);
@@ -65,6 +79,7 @@
       font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
+      white-space: nowrap;
     }
     .btn-ghost {
       background: var(--panel);
@@ -72,13 +87,13 @@
       border: 1px solid var(--border);
       border-radius: 9px;
       padding: 6px 11px;
-      font-size: 0.78rem;
+      font-size: 0.77rem;
       font-weight: 600;
       cursor: pointer;
+      white-space: nowrap;
     }
     .btn-ghost:hover { border-color: var(--border-strong); }
 
-    /* Error / Demo Banner */
     .error-box {
       background: var(--red-soft);
       border: 1px solid var(--red);
@@ -89,59 +104,123 @@
       display: none;
     }
 
-    /* Compact Selector Bar */
-    .selector-bar {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 10px;
+    /* FAVORITES RIBBON + DYNAMIC EDGE FADE */
+    .nav-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       margin-bottom: 14px;
     }
-    @media (max-width: 760px) { .selector-bar { grid-template-columns: 1fr; gap: 8px; } }
-    .sel-box {
+    .fav-bar {
       background: var(--panel);
       border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 8px 10px;
-    }
-    .pill-row {
+      border-radius: 12px;
+      padding: 6px 8px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
     }
-    @media (max-width: 600px) {
-      .pill-row.scroll-mobile {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding-bottom: 2px;
-        scrollbar-width: none;
-      }
-      .pill-row.scroll-mobile::-webkit-scrollbar { display: none; }
+    .fav-scroll-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
     }
+    .fav-track {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding: 2px 2px;
+    }
+    .fav-track::-webkit-scrollbar { display: none; }
+
+    /* Dynamic edge fade overlays when overflowing */
+    .fav-scroll-wrap::before,
+    .fav-scroll-wrap::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 28px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 2;
+    }
+    .fav-scroll-wrap::before {
+      left: 0;
+      background: linear-gradient(to right, var(--panel) 18%, rgba(15, 22, 35, 0) 100%);
+    }
+    .fav-scroll-wrap::after {
+      right: 0;
+      background: linear-gradient(to left, var(--panel) 18%, rgba(15, 22, 35, 0) 100%);
+    }
+    .fav-scroll-wrap.fade-left::before { opacity: 1; }
+    .fav-scroll-wrap.fade-right::after { opacity: 1; }
+
     .pill {
       background: #162032;
       color: var(--muted);
       border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 5px 10px;
-      font-size: 0.78rem;
+      border-radius: 8px;
+      padding: 6px 11px;
+      font-size: 0.79rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+    .pill:hover { color: var(--text); border-color: var(--border-strong); }
+    .pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .pill.temp-pill { border-style: dashed; }
+
+    .fav-manage-btn {
+      background: #141e30;
+      color: #fbbf24;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.76rem;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .fav-manage-btn:hover { background: #1a273d; }
+
+    /* Equal 4-Column Horizon Strip */
+    .horizon-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 6px;
+    }
+    .horizon-strip .pill {
+      text-align: center;
+      padding: 6px 4px;
+      font-size: 0.78rem;
+    }
 
     /* COMPACT HUB + 4 MINI SATELLITES */
     .cockpit {
       display: grid;
-      grid-template-columns: 240px 1fr 240px;
-      gap: 14px;
-      align-items: center;
+      grid-template-columns: 225px 1fr 225px;
+      gap: 12px;
+      align-items: stretch;
     }
-    @media (max-width: 960px) {
+    @media (max-width: 880px) {
       .cockpit {
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+        gap: 9px;
       }
       .hub-core {
         grid-column: 1 / -1;
@@ -157,42 +236,52 @@
       gap: 12px;
     }
 
-    /* Mini Satellite Card (Tap to Open) */
+    /* Mini Satellite Card */
     .mini-sat {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 13px 14px;
+      padding: 13px 13px;
       cursor: pointer;
       transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
-      position: relative;
       text-align: left;
       width: 100%;
+      min-width: 0;
       color: var(--text);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
     }
     .mini-sat:hover {
       background: var(--panel-hover);
       border-color: var(--border-strong);
       transform: translateY(-1px);
     }
-    .mini-sat.highlight-bull { border-color: rgba(16, 185, 129, 0.55); box-shadow: 0 0 18px rgba(16, 185, 129, 0.12); }
-    .mini-sat.highlight-bear { border-color: rgba(239, 68, 68, 0.45); }
+    .mini-sat.highlight-bull {
+      border-color: rgba(16, 185, 129, 0.55);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.12);
+    }
 
     .mini-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 4px;
       margin-bottom: 6px;
     }
     .mini-label {
-      font-size: 0.71rem;
+      font-size: 0.69rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       color: var(--muted);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .status-dot {
       width: 8px;
@@ -205,29 +294,39 @@
       font-size: 0.72rem;
       color: #64748b;
       font-weight: 700;
+      flex-shrink: 0;
     }
     .mini-main-val {
-      font-size: 1.05rem;
+      font-size: 1.04rem;
       font-weight: 800;
       letter-spacing: -0.01em;
-      margin-bottom: 2px;
+      line-height: 1.25;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .mini-sub-val {
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       color: #9fb0c9;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* CENTER HUB CORE */
     .hub-core {
       background: linear-gradient(165deg, #131e33 0%, #0b111e 100%);
       border: 1px solid var(--border-strong);
-      border-radius: 20px;
-      padding: 18px 18px 14px;
+      border-radius: 18px;
+      padding: 18px 16px 14px;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
       text-align: center;
+      min-width: 0;
     }
     .hub-asset-title {
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: #cbd5e1;
     }
@@ -243,13 +342,13 @@
       align-items: baseline;
     }
     .score-big {
-      font-size: 4.1rem;
+      font-size: 4rem;
       font-weight: 900;
       line-height: 1;
       letter-spacing: -0.04em;
     }
     .score-of {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--muted);
       font-weight: 700;
       margin-left: 4px;
@@ -258,23 +357,25 @@
       display: inline-block;
       padding: 4px 13px;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 0.79rem;
       font-weight: 800;
       margin-bottom: 10px;
     }
 
-    /* Visual Threshold Bar (0-44 Red | 45-69 Yellow | 70-100 Green Entry Window) */
+    /* Two-Pole Threshold Scale */
     .threshold-wrap {
-      max-width: 420px;
+      max-width: 390px;
       margin: 0 auto 12px;
     }
     .threshold-labels {
       display: flex;
       justify-content: space-between;
-      font-size: 0.65rem;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.67rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
       margin-bottom: 4px;
     }
     .threshold-bar {
@@ -283,7 +384,7 @@
       background: linear-gradient(90deg,
         rgba(239,68,68,0.65) 0%, rgba(239,68,68,0.65) 44%,
         rgba(245,158,11,0.65) 45%, rgba(245,158,11,0.65) 69%,
-        rgba(16,185,129,0.9) 70%, rgba(16,185,129,0.9) 100%);
+        rgba(16,185,129,0.92) 70%, rgba(16,185,129,0.92) 100%);
       position: relative;
     }
     .threshold-marker {
@@ -293,16 +394,20 @@
       height: 16px;
       background: #ffffff;
       border-radius: 2px;
-      box-shadow: 0 0 8px rgba(255,255,255,0.9);
+      box-shadow: 0 0 8px rgba(255,255,255,0.95);
       transform: translateX(-50%);
       transition: left 0.25s ease;
     }
 
+    /* Clean Readable Body Copy */
     .hub-plain-text {
-      font-size: 0.82rem;
+      font-size: 0.83rem;
+      line-height: 1.55;
       color: #cbd5e1;
-      max-width: 460px;
+      max-width: 48ch;
       margin: 0 auto 12px;
+      hyphens: auto;
+      -webkit-hyphens: auto;
     }
 
     /* Compact Chart inside Hub */
@@ -316,9 +421,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.7rem;
+      gap: 6px;
+      font-size: 0.71rem;
       color: var(--muted);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
     }
     .chart-top-row select {
       background: #141e30;
@@ -326,17 +432,17 @@
       border: 1px solid var(--border);
       border-radius: 6px;
       padding: 2px 6px;
-      font-size: 0.7rem;
+      font-size: 0.71rem;
     }
     svg { width: 100%; height: auto; display: block; }
 
-    /* Collapsible Pillars & Signals (Clean Mobile) */
+    /* Collapsible Pillars & Glossary */
     details.info-drawer {
-      margin-top: 14px;
+      margin-top: 12px;
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 10px 14px;
+      padding: 11px 14px;
     }
     details.info-drawer summary {
       cursor: pointer;
@@ -347,6 +453,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
     }
     details.info-drawer summary::-webkit-details-marker { display: none; }
     .drawer-content {
@@ -354,9 +461,18 @@
       padding-top: 10px;
       border-top: 1px solid var(--border);
     }
+    .glossary-note {
+      font-size: 0.81rem;
+      line-height: 1.55;
+      color: #cbd5e1;
+      max-width: 68ch;
+      margin-bottom: 12px;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
     .signals-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 10px;
     }
     .sig-card {
@@ -366,11 +482,11 @@
       padding: 10px 12px;
     }
     .sig-head { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; }
-    .sig-body { font-size: 0.77rem; color: #9fb0c9; }
+    .sig-body { font-size: 0.78rem; line-height: 1.5; color: #9fb0c9; }
 
     /* Footer */
     footer {
-      margin-top: 22px;
+      margin-top: 20px;
       padding-top: 14px;
       border-top: 1px solid var(--border);
       display: flex;
@@ -379,10 +495,11 @@
       align-items: center;
       gap: 10px;
       font-size: 0.74rem;
+      line-height: 1.5;
       color: var(--muted);
     }
 
-    /* MODALS (Onboarding Gate, Satellite Detail Modal, Portfolio/Import Modal) */
+    /* MODALS */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -390,7 +507,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 14px;
+      padding: 12px;
       z-index: 200;
     }
     .modal-backdrop.open { display: flex; }
@@ -398,33 +515,107 @@
       background: var(--panel);
       border: 1px solid var(--border-strong);
       border-radius: 16px;
-      max-width: 560px;
+      max-width: 540px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      padding: 20px;
+      padding: 18px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     }
-    .modal h2 { font-size: 1.05rem; margin-bottom: 4px; }
-    .modal p.desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
+    .modal h2 { font-size: 1.04rem; margin-bottom: 5px; }
+    .modal p.desc {
+      font-size: 0.81rem;
+      line-height: 1.55;
+      color: var(--muted);
+      margin-bottom: 12px;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
     .detail-box {
       background: #0a101b;
       border: 1px solid var(--border);
       border-radius: 11px;
       padding: 12px;
       margin-bottom: 12px;
+      line-height: 1.55;
     }
     .kv-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 5px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      font-size: 0.84rem;
+      align-items: baseline;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.83rem;
     }
     .kv-row:last-child { border-bottom: none; }
     .kv-label { color: var(--muted); }
-    .kv-val { font-weight: 700; }
+    .kv-val { font-weight: 700; text-align: right; }
+    @media (max-width: 420px) {
+      .kv-row { flex-direction: column; gap: 2px; }
+      .kv-val { text-align: left; }
+    }
+
+    /* Favorites Manager List */
+    .fav-search {
+      width: 100%;
+      background: #090e18;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      padding: 8px 11px;
+      font-size: 0.84rem;
+      margin-bottom: 10px;
+    }
+    .fav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 320px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .fav-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      background: #0a101b;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 11px;
+    }
+    .fav-item-info {
+      cursor: pointer;
+      flex: 1;
+      min-width: 0;
+    }
+    .fav-item-title {
+      font-size: 0.84rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .fav-item-sub {
+      font-size: 0.73rem;
+      color: var(--muted);
+    }
+    .star-btn {
+      background: #141e30;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .star-btn.starred {
+      background: rgba(251, 191, 36, 0.14);
+      border-color: rgba(251, 191, 36, 0.5);
+      color: #fbbf24;
+    }
 
     .form-row {
       display: grid;
@@ -460,10 +651,8 @@
       cursor: pointer;
       margin-bottom: 12px;
       font-size: 0.8rem;
+      line-height: 1.45;
     }
-    .tone-bull { color: var(--green); background: var(--green-soft); }
-    .tone-neutral { color: var(--yellow); background: var(--yellow-soft); }
-    .tone-bear { color: var(--red); background: var(--red-soft); }
   </style>
 </head>
 <body>
@@ -475,7 +664,7 @@
     <header>
       <div class="brand">
         <h1>Regime & Horizont Kompass</h1>
-        <div class="sub">Statistischer Markt- & Regel-Monitor · v2.0 Beta</div>
+        <div class="sub">Statistischer Markt- & Regel-Monitor · v2.1 Beta</div>
       </div>
       <div class="header-actions">
         <span class="status-pill" id="last-updated">Lade Daten...</span>
@@ -483,14 +672,16 @@
       </div>
     </header>
 
-    <!-- Asset & Horizon Selectors -->
-    <div class="selector-bar">
-      <div class="sel-box">
-        <div class="pill-row scroll-mobile" id="asset-buttons"></div>
+    <!-- FAVORITES RIBBON + HORIZON STRIP -->
+    <div class="nav-deck">
+      <div class="fav-bar">
+        <div class="fav-scroll-wrap" id="fav-scroll-wrap">
+          <div class="fav-track" id="fav-track" onscroll="updateFavFades()"></div>
+        </div>
+        <button class="fav-manage-btn" onclick="openFavModal()">★ Favoriten <span id="fav-count">(0/10)</span></button>
       </div>
-      <div class="sel-box">
-        <div class="pill-row" id="horizon-buttons"></div>
-      </div>
+
+      <div class="horizon-strip" id="horizon-buttons"></div>
     </div>
 
     <!-- COMPACT HUB + 4 MINI SATELLITES -->
@@ -508,7 +699,7 @@
 
         <button class="mini-sat" id="mini-sat-2" onclick="openSatModal(2)">
           <div class="mini-top">
-            <span class="mini-label"><span class="status-dot" id="dot-2"></span>2 · Gewinn-Korridor</span>
+            <span class="mini-label"><span class="status-dot" id="dot-2"></span>2 · Gewinn-Ziel</span>
             <span class="mini-open-hint">Regel ⚙</span>
           </div>
           <div class="mini-main-val" id="mval-2">-</div>
@@ -527,12 +718,11 @@
         </div>
         <div><span class="zone-badge" id="hub-badge">-</span></div>
 
-        <!-- Visible Threshold Scale -->
+        <!-- Two-Pole Threshold Scale -->
         <div class="threshold-wrap">
           <div class="threshold-labels">
-            <span style="color:var(--red);">0–44 Gegenwind</span>
-            <span style="color:var(--yellow);">45–69 Neutral</span>
-            <span style="color:var(--green);">70–100 Einstiegs-Fenster</span>
+            <span style="color:var(--red);">Gegenwind (&lt;45)</span>
+            <span style="color:var(--green);">Einstiegs-Fenster (70+)</span>
           </div>
           <div class="threshold-bar">
             <div class="threshold-marker" id="score-marker" style="left:50%;"></div>
@@ -544,7 +734,7 @@
         <!-- Logarithmic Horizon Chart -->
         <div class="chart-box">
           <div class="chart-top-row">
-            <span>Zeithorizont-Verlauf (Log-Skala)</span>
+            <span>Zeithorizont-Kurve (Log-Skala)</span>
             <select id="bm-select" onchange="renderAll()">
               <option value="macro">vs. Makro-Basis</option>
               <option value="MSCI">vs. MSCI World</option>
@@ -552,7 +742,7 @@
               <option value="GOLD">vs. Gold</option>
             </select>
           </div>
-          <svg id="horizon-chart" viewBox="0 0 520 155"></svg>
+          <svg id="horizon-chart" viewBox="0 0 520 150"></svg>
         </div>
       </section>
 
@@ -560,7 +750,7 @@
       <div class="sat-stack">
         <button class="mini-sat" id="mini-sat-3" onclick="openSatModal(3)">
           <div class="mini-top">
-            <span class="mini-label"><span class="status-dot" id="dot-3"></span>3 · Rücksetzer-Radar</span>
+            <span class="mini-label"><span class="status-dot" id="dot-3"></span>3 · Rücksetzer</span>
             <span class="mini-open-hint">Zonen ↗</span>
           </div>
           <div class="mini-main-val" id="mval-3">-</div>
@@ -569,7 +759,7 @@
 
         <button class="mini-sat" id="mini-sat-4" onclick="openSatModal(4)">
           <div class="mini-top">
-            <span class="mini-label"><span class="status-dot" id="dot-4"></span>4 · Haltefrist & Cash</span>
+            <span class="mini-label"><span class="status-dot" id="dot-4"></span>4 · Haltefrist</span>
             <span class="mini-open-hint">Details ↗</span>
           </div>
           <div class="mini-main-val" id="mval-4">-</div>
@@ -581,12 +771,12 @@
     <!-- Collapsible Factor & Glossary Drawer -->
     <details class="info-drawer">
       <summary>
-        <span>ⓘ Was bedeuten Score, Farben & Faktoren? (Klartext-Erklärung)</span>
-        <span style="color:var(--muted); font-size:0.74rem;">Aufklappen ▾</span>
+        <span>ⓘ Was bedeuten Score, Farben &amp; Faktoren? (Klartext-Erklärung)</span>
+        <span style="color:var(--muted); font-size:0.74rem; white-space:nowrap;">Aufklappen ▾</span>
       </summary>
       <div class="drawer-content">
-        <p style="font-size:0.79rem; color:#cbd5e1; margin-bottom:10px;">
-          <b>So liest du die Farben:</b> Im Zentrum zeigt <b>Grün (70–100)</b> ein historisch starkes <b>Einstiegs- & Rückenwind-Fenster</b> auf Basis von Trend- und Makrodaten. Im Satellit <b>2 · Gewinn-Korridor</b> leuchtet <b>Grün (🎯 Zielkorridor aktiv)</b> auf, sobald deine Position deine selbst gewählte Gewinnmarke erreicht hat <i>und</i> der Markt kurzfristig heiß läuft. Alle Anzeigen sind rein statistische Berechnungen und keine Anlageberatung.
+        <p class="glossary-note">
+          <b>So liest du die Farben:</b> Im Zentrum zeigt <b>Grün (70–100)</b> ein historisch starkes <b>Einstiegs- &amp; Rückenwind-Fenster</b> auf Basis von Trend- und Makrodaten. Im Satellit <b>2 · Gewinn-Ziel</b> leuchtet <b>Grün (🎯 Zielkorridor aktiv)</b> auf, sobald deine Position deine selbst gewählte Gewinnmarke erreicht hat <i>und</i> der Markt kurzfristig heiß läuft. Alle Anzeigen sind rein statistische Berechnungen und keine Anlageberatung.
         </p>
         <div class="signals-grid" id="signals-grid"></div>
       </div>
@@ -607,14 +797,28 @@
       <h2>Hinweis vor der Nutzung (Beta-Version)</h2>
       <p class="desc">Bitte bestätige kurz die Einordnung dieses Tools, bevor du startest:</p>
       <div class="detail-box" style="font-size:0.82rem; color:#cbd5e1;">
-        Der <b>Regime & Horizont Kompass</b> ist ein rein mathematisch-statistischer Markt- und Regel-Monitor. Alle angezeigten Scores, Zonen und Prozentmarken basieren auf historischen Marktdaten sowie deinen eigenen Eingaben. Sie stellen <b>weder eine Zukunftsprognose noch eine persönliche Anlage- oder Steuerberatung</b> dar.
+        Der <b>Regime &amp; Horizont Kompass</b> ist ein rein mathematisch-statistischer Markt- und Regel-Monitor. Alle angezeigten Scores, Zonen und Prozentmarken basieren auf historischen Marktdaten sowie deinen eigenen Eingaben. Sie stellen <b>weder eine Zukunftsprognose noch eine persönliche Anlage- oder Steuerberatung</b> dar.
       </div>
-      <label style="display:flex; align-items:flex-start; gap:9px; font-size:0.82rem; cursor:pointer;">
+      <label style="display:flex; align-items:flex-start; gap:9px; font-size:0.82rem; line-height:1.45; cursor:pointer;">
         <input type="checkbox" id="gate-check" style="margin-top:3px;" />
         <span>Verstanden – ich nutze das Tool ausschließlich als statistische Informationshilfe in eigener Verantwortung.</span>
       </label>
       <div class="modal-actions">
         <button class="btn-action" onclick="acceptGate()">Weiter zum Kompass</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAVORITES MANAGER MODAL (MAX 10 IN RIBBON) -->
+  <div class="modal-backdrop" id="fav-modal">
+    <div class="modal">
+      <h2>Favoriten-Band verwalten (<span id="fav-modal-count">0/10</span>)</h2>
+      <p class="desc">Wähle bis zu <b>10 Favoriten</b> für deine Schnellwahl-Leiste über dem Score. Tippe auf ein Asset, um es direkt anzuzeigen.</p>
+      <input type="text" class="fav-search" id="fav-search" placeholder="Asset suchen (z. B. BTC, NVIDIA, MSCI, Gold)..." oninput="renderFavList()" />
+      <div class="fav-list" id="fav-list"></div>
+      <div class="modal-actions" style="justify-content:space-between;">
+        <button class="btn-ghost" onclick="syncDepotToFavorites()">Depot-Assets als Favoriten</button>
+        <button class="btn-action" onclick="closeFavModal()">Fertig</button>
       </div>
     </div>
   </div>
@@ -636,7 +840,7 @@
   <!-- PORTFOLIO & CSV IMPORT MODAL -->
   <div class="modal-backdrop" id="import-modal">
     <div class="modal">
-      <h2>Mein Depot & CSV-Import (100 % lokal)</h2>
+      <h2>Mein Depot &amp; CSV-Import (100 % lokal)</h2>
       <p class="desc">Deine Bestände werden nur in deinem Browser gespeichert und niemals hochgeladen.</p>
 
       <div class="form-row">
@@ -662,8 +866,8 @@
 
       <div class="dropzone" onclick="document.getElementById('file-input').click()">
         <input type="file" id="file-input" accept=".csv,.txt,image/*" style="display:none" onchange="handleUniversalFile(this.files[0])" />
-        <b>CSV-Datei (Broker-Export) oder Screenshot hier auswählen</b>
-        <div style="font-size:0.73rem; color:var(--muted); margin-top:2px;" id="imp-status">Unterstützt ETH, SOL, BTC, MSCI World (EUNL.DE / IE00B4L5Y983), NVDA, Gold u.v.m.</div>
+        <b>CSV-Datei (Broker-Export) oder Screenshot auswählen</b>
+        <div style="font-size:0.73rem; color:var(--muted); margin-top:3px;" id="imp-status">Unterstützt ETH, SOL, BTC, MSCI World (EUNL.DE / IE00B4L5Y983), NVDA, Gold u.v.m.</div>
       </div>
 
       <div class="field">
@@ -682,6 +886,8 @@
   </div>
 
   <script>
+    const MAX_FAVORITES = 10;
+
     const HORIZONS = [
       { id: "1w", label: "1 Woche",  days: 7 },
       { id: "1m", label: "1 Monat",  days: 30 },
@@ -689,10 +895,13 @@
       { id: "5y", label: "5 Jahre+", days: 1825 }
     ];
 
+    const DEFAULT_FAVORITES = ["BTC", "ETH", "SOL", "MSCI", "NVDA", "GOLD", "ADA", "SUI"];
+
     const BETA_SAMPLE = {
       cashReserveEur: 3500,
       tpTargetCryptoPct: 30,
       tpTargetTradfiPct: 18,
+      favorites: [...DEFAULT_FAVORITES],
       positions: {
         BTC:   { qty: 0.15, avgPrice: 62400, buyDate: "2025-02-15" },
         ETH:   { qty: 1.80, avgPrice: 2850,  buyDate: "2025-03-01" },
@@ -705,13 +914,14 @@
 
     function loadState() {
       try {
-        const raw = localStorage.getItem("regime_kompass_v2");
+        const raw = localStorage.getItem("regime_kompass_v2_1");
         if (!raw) return JSON.parse(JSON.stringify(BETA_SAMPLE));
         const p = JSON.parse(raw);
         return {
           cashReserveEur: p.cashReserveEur ?? 3500,
           tpTargetCryptoPct: p.tpTargetCryptoPct ?? 30,
           tpTargetTradfiPct: p.tpTargetTradfiPct ?? 18,
+          favorites: Array.isArray(p.favorites) && p.favorites.length > 0 ? p.favorites.slice(0, MAX_FAVORITES) : [...DEFAULT_FAVORITES],
           positions: p.positions || {}
         };
       } catch (e) {
@@ -722,10 +932,9 @@
     let state = loadState();
     let selectedAsset = "BTC";
     let selectedHorizon = "1m";
-    let activeSatModal = 1;
 
     function saveState() {
-      localStorage.setItem("regime_kompass_v2", JSON.stringify(state));
+      localStorage.setItem("regime_kompass_v2_1", JSON.stringify(state));
     }
 
     function fmtNum(v, d = 2) {
@@ -757,8 +966,110 @@
       document.getElementById("gate-modal").classList.remove("open");
     };
 
-    window.selectAsset = function(id) { selectedAsset = id; renderAll(); };
+    window.selectAsset = function(id) {
+      selectedAsset = id;
+      renderAll();
+      scrollSelectedPillIntoView();
+    };
     window.selectHorizon = function(id) { selectedHorizon = id; renderAll(); };
+
+    // Dynamic Fade-Out on Favorites Ribbon
+    window.updateFavFades = function() {
+      const wrap = document.getElementById("fav-scroll-wrap");
+      const track = document.getElementById("fav-track");
+      if (!wrap || !track) return;
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (maxScroll <= 2) {
+        wrap.classList.remove("fade-left", "fade-right");
+        return;
+      }
+      wrap.classList.toggle("fade-left", track.scrollLeft > 6);
+      wrap.classList.toggle("fade-right", track.scrollLeft < maxScroll - 6);
+    };
+
+    function scrollSelectedPillIntoView() {
+      const activeBtn = document.querySelector("#fav-track .pill.active");
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
+      setTimeout(updateFavFades, 120);
+    }
+
+    window.addEventListener("resize", updateFavFades);
+
+    // Favorites Modal Logic
+    window.openFavModal = function() {
+      document.getElementById("fav-search").value = "";
+      renderFavList();
+      document.getElementById("fav-modal").classList.add("open");
+    };
+    window.closeFavModal = function() {
+      document.getElementById("fav-modal").classList.remove("open");
+    };
+
+    window.toggleFavorite = function(id) {
+      const idx = state.favorites.indexOf(id);
+      if (idx >= 0) {
+        if (state.favorites.length <= 1) return;
+        state.favorites.splice(idx, 1);
+      } else {
+        if (state.favorites.length >= MAX_FAVORITES) {
+          alert(`Maximal ${MAX_FAVORITES} Favoriten im Band möglich. Bitte entferne zuerst einen Stern.`);
+          return;
+        }
+        state.favorites.push(id);
+      }
+      saveState();
+      renderFavList();
+      renderAll();
+    };
+
+    window.pickAssetFromModal = function(id) {
+      selectedAsset = id;
+      closeFavModal();
+      renderAll();
+      scrollSelectedPillIntoView();
+    };
+
+    window.syncDepotToFavorites = function() {
+      if (!window.LIVE_COMPASS_DATA) return;
+      const available = Object.keys(window.LIVE_COMPASS_DATA.assets);
+      const held = Object.keys(state.positions).filter(id => (state.positions[id]?.qty || 0) > 0 && available.includes(id));
+      const merged = [...new Set([...held, ...state.favorites])].slice(0, MAX_FAVORITES);
+      if (merged.length > 0) {
+        state.favorites = merged;
+        saveState();
+        renderFavList();
+        renderAll();
+      }
+    };
+
+    window.renderFavList = function() {
+      if (!window.LIVE_COMPASS_DATA) return;
+      const assets = window.LIVE_COMPASS_DATA.assets;
+      const q = (document.getElementById("fav-search").value || "").trim().toLowerCase();
+      document.getElementById("fav-modal-count").textContent = `${state.favorites.length}/${MAX_FAVORITES}`;
+
+      const items = Object.values(assets).filter(a =>
+        !q || a.id.toLowerCase().includes(q) || a.name.toLowerCase().includes(q)
+      );
+
+      document.getElementById("fav-list").innerHTML = items.map(a => {
+        const isFav = state.favorites.includes(a.id);
+        const sc = a.scores[selectedHorizon] ?? 50;
+        return `
+          <div class="fav-item">
+            <div class="fav-item-info" onclick="pickAssetFromModal('${a.id}')">
+              <div class="fav-item-title">${a.id} · ${a.name}</div>
+              <div class="fav-item-sub">${fmtPrice(a.price, a.currency)} · Score ${sc}/100</div>
+            </div>
+            <button class="star-btn ${isFav ? "starred" : ""}" onclick="toggleFavorite('${a.id}')">
+              ${isFav ? "★ Aktiv" : "☆ Hinzufügen"}
+            </button>
+          </div>
+        `;
+      }).join("");
+    };
 
     function getZoneInfo(score, horizonId) {
       const isLong = (horizonId === "1y" || horizonId === "5y");
@@ -790,7 +1101,7 @@
       };
     }
 
-    function computeSatelliteData(asset, score) {
+    function computeSatelliteData(asset) {
       const pos = state.positions[asset.id] || { qty: 0, avgPrice: 0, buyDate: "" };
       const cur = asset.currency;
       const price = asset.price || 0;
@@ -803,7 +1114,7 @@
       let sat1 = {
         tone: "yellow",
         main: "Kein Bestand",
-        sub: "Watchlist · Tippen für Details",
+        sub: "Watchlist · Tippen",
         rows: [
           ["Aktueller Referenzkurs", fmtPrice(price, cur)],
           ["Hinterlegter Bestand", "0 (Watchlist)"],
@@ -816,7 +1127,7 @@
         const neededPct = ((pos.avgPrice / price) - 1.0) * 100.0;
         sat1 = {
           tone: inPlus ? "green" : "red",
-          main: `${pnlPct >= 0 ? "+" : ""}${fmtNum(pnlPct, 1)} % zum Einstand`,
+          main: `${pnlPct >= 0 ? "+" : ""}${fmtNum(pnlPct, 1)} %`,
           sub: `${fmtNum(posVal, 0)} ${cur} · BE ${fmtNum(pos.avgPrice, dec)}`,
           rows: [
             ["Bestand & aktueller Wert", `${fmtNum(pos.qty, pos.qty < 10 ? 3 : 1)} Stk. (${fmtNum(posVal, 0)} ${cur})`],
@@ -829,7 +1140,7 @@
         };
       }
 
-      // Sat 2: Gewinn-Mitnahme-Korridor (User-defined % + Short-term Heat)
+      // Sat 2: Gewinn-Mitnahme-Korridor
       const targetPct = asset.profile === "crypto" ? state.tpTargetCryptoPct : state.tpTargetTradfiPct;
       const targetPrice = hasPos ? pos.avgPrice * (1 + targetPct / 100.0) : price * (1 + targetPct / 100.0);
       const s1w = asset.scores["1w"] ?? 50;
@@ -838,17 +1149,17 @@
       const targetReached = hasPos && pnlPct >= targetPct;
 
       let sat2Tone = "yellow";
-      let sat2Main = `Ziel +${targetPct} % (${fmtNum(targetPrice, dec)})`;
-      let sat2Sub = hasPos ? (targetReached ? "Zielmarke erreicht · Trend läuft" : "Noch unter persönlicher Zielmarke") : "Persönliche Ziel-Regel";
+      let sat2Main = `Ziel +${targetPct} %`;
+      let sat2Sub = `${fmtNum(targetPrice, dec)} ${cur}`;
 
       if (targetReached && overheated) {
         sat2Tone = "green";
-        sat2Main = "🎯 Zielkorridor aktiv";
-        sat2Sub = `+${fmtNum(pnlPct, 1)} % Gewinn · Kurzfristig heiß`;
+        sat2Main = "🎯 Zielkorridor";
+        sat2Sub = `+${fmtNum(pnlPct, 1)} % · Kurzfristig heiß`;
       } else if (hasPos && pnlPct < 0) {
         sat2Tone = "red";
         sat2Main = "Unter Einstand";
-        sat2Sub = `Zielmarke bei ${fmtNum(targetPrice, dec)} ${cur}`;
+        sat2Sub = `Ziel: ${fmtNum(targetPrice, dec)} ${cur}`;
       }
 
       const sat2 = {
@@ -858,20 +1169,20 @@
         sub: sat2Sub,
         rows: [
           ["Deine Gewinn-Zielregel", `+${targetPct} % über Einstand (${fmtNum(targetPrice, dec)} ${cur})`],
-          ["Stufe 2 (+50 % Aufschlag)", `${fmtNum((hasPos ? pos.avgPrice : price) * (1 + (targetPct * 1.6) / 100), dec)} ${cur}`],
+          ["Stufe 2 (+60 % Aufschlag)", `${fmtNum((hasPos ? pos.avgPrice : price) * (1 + (targetPct * 1.6) / 100), dec)} ${cur}`],
           ["Kurzfrist-Temperatur (1W / RSI)", `Score ${s1w}/100 · RSI ${rsi} (${overheated ? "Überhitzt" : "Normal"})`]
         ],
         note: "Diese Zone wird automatisch grün (🎯), wenn deine persönliche Gewinnmarke erreicht ist UND der Markt kurzfristig überhitzt."
       };
 
-      // Sat 3: Rücksetzer-Radar (DCA Zones)
+      // Sat 3: Rücksetzer-Radar
       const drops = asset.profile === "crypto" ? [0.85, 0.75, 0.65] : [0.94, 0.88, 0.82];
       const s1y = asset.scores["1y"] ?? 50;
       const dipOpportunity = (s1w <= 34 && s1y >= 58);
       const sat3 = {
         tone: dipOpportunity ? "green" : (s1y >= 58 ? "yellow" : "red"),
         highlight: dipOpportunity ? "highlight-bull" : "",
-        main: dipOpportunity ? "🟢 Rücksetzer-Fenster" : `Zone 1: ${fmtNum(price * drops[0], dec)} ${cur}`,
+        main: dipOpportunity ? "🟢 Rücksetzer" : `${fmtNum(price * drops[0], dec)} ${cur}`,
         sub: `1Y-Basis: ${s1y}/100 (${s1y >= 58 ? "intakt" : "schwach"})`,
         rows: [
           [`Rücksetzer-Zone 1 (${asset.profile === "crypto" ? "-15 %" : "-6 %"})`, `${fmtNum(price * drops[0], dec)} ${cur}`],
@@ -889,8 +1200,8 @@
       const isOverYear = holdDays >= 365;
       const sat4 = {
         tone: (asset.profile === "crypto" && pos.buyDate && isOverYear) ? "green" : "yellow",
-        main: `${fmtNum(state.cashReserveEur, 0)} EUR Cash`,
-        sub: pos.buyDate ? `Haltedauer: ${holdDays} Tage` : "Kaufdatum nicht gesetzt",
+        main: `${fmtNum(state.cashReserveEur, 0)} € Cash`,
+        sub: pos.buyDate ? `Haltedauer: ${holdDays} T.` : "Kaufdatum offen",
         rows: [
           ["Freie Bar-Reserve (Cash)", `${fmtNum(state.cashReserveEur, 0)} EUR`],
           ["Hinterlegtes Kaufdatum", pos.buyDate || "Nicht eingetragen"],
@@ -915,18 +1226,31 @@
       }
       const DATA = window.LIVE_COMPASS_DATA;
       const assets = DATA.assets;
-      if (!assets[selectedAsset]) selectedAsset = Object.keys(assets)[0];
+      const availableIds = Object.keys(assets);
+
+      // Clean favorites list against available live assets
+      state.favorites = state.favorites.filter(id => availableIds.includes(id)).slice(0, MAX_FAVORITES);
+      if (state.favorites.length === 0) state.favorites = availableIds.slice(0, Math.min(8, MAX_FAVORITES));
+      if (!assets[selectedAsset]) selectedAsset = state.favorites[0];
+
       const asset = assets[selectedAsset];
       const hObj = HORIZONS.find(h => h.id === selectedHorizon);
       const score = asset.scores[selectedHorizon] ?? 50;
       const zone = getZoneInfo(score, selectedHorizon);
 
       document.getElementById("last-updated").textContent = `${DATA.version} · ${DATA.updated_at}`;
+      document.getElementById("fav-count").textContent = `(${state.favorites.length}/${MAX_FAVORITES})`;
 
-      // Asset & Horizon Pills
-      document.getElementById("asset-buttons").innerHTML = Object.keys(assets).map(id => `
-        <button class="pill ${id === selectedAsset ? "active" : ""}" onclick="selectAsset('${id}')">${id}</button>
-      `).join("");
+      // Build Favorites Ribbon (plus temporary active pill if user picked a non-favorite)
+      const ribbonIds = state.favorites.includes(selectedAsset)
+        ? state.favorites
+        : [selectedAsset, ...state.favorites];
+
+      document.getElementById("fav-track").innerHTML = ribbonIds.map(id => {
+        const isTemp = !state.favorites.includes(id);
+        return `<button class="pill ${id === selectedAsset ? "active" : ""} ${isTemp ? "temp-pill" : ""}" onclick="selectAsset('${id}')">${id}</button>`;
+      }).join("");
+
       document.getElementById("horizon-buttons").innerHTML = HORIZONS.map(h => `
         <button class="pill ${h.id === selectedHorizon ? "active" : ""}" onclick="selectHorizon('${h.id}')">${h.label}</button>
       `).join("");
@@ -947,7 +1271,7 @@
       document.getElementById("hub-advice").textContent = zone.text;
 
       // Mini Satellites
-      const sats = computeSatelliteData(asset, score);
+      const sats = computeSatelliteData(asset);
       [1, 2, 3, 4].forEach(idx => {
         const s = sats[idx];
         const card = document.getElementById(`mini-sat-${idx}`);
@@ -969,13 +1293,14 @@
       `).join("");
 
       renderChart(DATA, asset);
+      requestAnimationFrame(updateFavFades);
     }
 
     function renderChart(DATA, asset) {
       const svg = document.getElementById("horizon-chart");
       const bmChoice = document.getElementById("bm-select").value;
       const padL = 32, padR = 20, padT = 16, padB = 24;
-      const width = 520, height = 155;
+      const width = 520, height = 150;
       const plotW = width - padL - padR;
       const plotH = height - padT - padB;
 
@@ -1030,10 +1355,8 @@
 
     // --- SATELLITE DETAIL & RULE MODAL ---
     window.openSatModal = function(idx) {
-      activeSatModal = idx;
       const asset = window.LIVE_COMPASS_DATA.assets[selectedAsset];
-      const score = asset.scores[selectedHorizon] ?? 50;
-      const sats = computeSatelliteData(asset, score);
+      const sats = computeSatelliteData(asset);
       const s = sats[idx];
 
       const titles = {
@@ -1189,6 +1512,7 @@
 
       const csvRaw = document.getElementById("imp-csv").value.trim();
       if (csvRaw) {
+        const importedTickers = [];
         csvRaw.split(/\r?\n/).forEach(line => {
           const parts = line.split(/[;,\t]+/).map(s => s.trim());
           if (parts.length >= 3) {
@@ -1198,9 +1522,13 @@
             const d = parts[3] || "";
             if (t && !isNaN(q) && !isNaN(a)) {
               state.positions[t] = { qty: q, avgPrice: a, buyDate: d };
+              if (q > 0) importedTickers.push(t);
             }
           }
         });
+        if (importedTickers.length > 0) {
+          state.favorites = [...new Set([...importedTickers, ...state.favorites])].slice(0, MAX_FAVORITES);
+        }
         document.getElementById("imp-csv").value = "";
       }
 
@@ -1211,7 +1539,7 @@
 
     // Copy Beta Feedback for WhatsApp/Signal
     window.copyBetaFeedback = function() {
-      const msg = `Beta-Feedback Regime Kompass (v2.0)\nAsset: ${selectedAsset} | Horizont: ${selectedHorizon}\nWas war gut:\nWas war unklar:`;
+      const msg = `Beta-Feedback Regime Kompass (v2.1)\nAsset: ${selectedAsset} | Horizont: ${selectedHorizon}\nWas war gut:\nWas war unklar:`;
       navigator.clipboard.writeText(msg).then(() => {
         const btn = document.getElementById("btn-feedback");
         btn.textContent = "Feedback-Vorlage kopiert ✓";
