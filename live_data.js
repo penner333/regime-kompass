@@ -1,10 +1,10 @@
 window.LIVE_COMPASS_DATA = {
   "version": "v0.9",
-  "updated_at": "20.11.2026 · 00:48 Uhr",
+  "updated_at": "20.11.2026 · 06:59 Uhr",
   "macro_summary": {
     "m2_yoy": 5.71,
     "hy_spread": 3.47,
-    "usdjpy": 159.52,
+    "usdjpy": 159.19,
     "jpy_shock": false,
     "vix": 28.4,
     "fng": 12
@@ -21,7 +21,7 @@ window.LIVE_COMPASS_DATA = {
       "name": "Bitcoin",
       "ticker": "BTC-USD",
       "profile": "crypto",
-      "price": 61997.3,
+      "price": 61957.68,
       "currency": "USD",
       "rsi": 35,
       "scores": {
@@ -52,23 +52,23 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 53,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 52,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
           "score": 23,
-          "summary": "30T-Impuls -23.5 %, Abstand zum 200T-Schnitt 0.86x, RSI(14) bei 35."
+          "summary": "30T-Impuls -23.6 %, Abstand zum 200T-Schnitt 0.86x, RSI(14) bei 35."
         },
         {
           "title": "Relative Stärke & Marktbreite",
-          "score": 47,
-          "summary": "4W-Performance vs. BTC +0.0 %, Volumen-Aktivität 1.11x zum 20W-Schnitt."
+          "score": 48,
+          "summary": "4W-Performance vs. BTC +0.0 %, Volumen-Aktivität 1.13x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
           "score": 43,
-          "summary": "Position in 52W-Spanne bei 11 %, Kapitulations-Index 43/100."
+          "summary": "Position in 52W-Spanne bei 10 %, Kapitulations-Index 44/100."
         }
       ]
     },
@@ -77,7 +77,7 @@ window.LIVE_COMPASS_DATA = {
       "name": "Ethereum",
       "ticker": "ETH-USD",
       "profile": "crypto",
-      "price": 1750.56,
+      "price": 1747.21,
       "currency": "USD",
       "rsi": 35,
       "scores": {
@@ -108,23 +108,23 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 53,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 52,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
           "score": 25,
-          "summary": "30T-Impuls -26.6 %, Abstand zum 200T-Schnitt 0.83x, RSI(14) bei 35."
+          "summary": "30T-Impuls -26.7 %, Abstand zum 200T-Schnitt 0.82x, RSI(14) bei 35."
         },
         {
           "title": "Relative Stärke & Marktbreite",
-          "score": 29,
-          "summary": "4W-Performance vs. BTC -4.0 %, Volumen-Aktivität 0.96x zum 20W-Schnitt."
+          "score": 30,
+          "summary": "4W-Performance vs. BTC -4.1 %, Volumen-Aktivität 0.98x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
           "score": 46,
-          "summary": "Position in 52W-Spanne bei 13 %, Kapitulations-Index 40/100."
+          "summary": "Position in 52W-Spanne bei 12 %, Kapitulations-Index 40/100."
         }
       ]
     },
@@ -133,7 +133,7 @@ window.LIVE_COMPASS_DATA = {
       "name": "Solana",
       "ticker": "SOL-USD",
       "profile": "crypto",
-      "price": 72.72,
+      "price": 72.78,
       "currency": "USD",
       "rsi": 37,
       "scores": {
@@ -164,8 +164,8 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 53,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 52,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
@@ -174,8 +174,8 @@ window.LIVE_COMPASS_DATA = {
         },
         {
           "title": "Relative Stärke & Marktbreite",
-          "score": 32,
-          "summary": "4W-Performance vs. BTC -7.5 %, Volumen-Aktivität 1.02x zum 20W-Schnitt."
+          "score": 33,
+          "summary": "4W-Performance vs. BTC -7.3 %, Volumen-Aktivität 1.03x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
@@ -189,14 +189,14 @@ window.LIVE_COMPASS_DATA = {
       "name": "Cardano",
       "ticker": "ADA-USD",
       "profile": "crypto",
-      "price": 0.1516,
+      "price": 0.1501,
       "currency": "USD",
       "rsi": 35,
       "scores": {
         "1w": 11,
         "1m": 13,
         "1y": 34,
-        "5y": 43
+        "5y": 42
       },
       "regime": "Gegenwind",
       "pillars": {
@@ -220,23 +220,23 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 53,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 52,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
           "score": 9,
-          "summary": "30T-Impuls -28.0 %, Abstand zum 200T-Schnitt 0.70x, RSI(14) bei 35."
+          "summary": "30T-Impuls -28.7 %, Abstand zum 200T-Schnitt 0.69x, RSI(14) bei 35."
         },
         {
           "title": "Relative Stärke & Marktbreite",
-          "score": 14,
-          "summary": "4W-Performance vs. BTC -5.8 %, Volumen-Aktivität 0.63x zum 20W-Schnitt."
+          "score": 13,
+          "summary": "4W-Performance vs. BTC -6.7 %, Volumen-Aktivität 0.64x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
           "score": 56,
-          "summary": "Position in 52W-Spanne bei 4 %, Kapitulations-Index 45/100."
+          "summary": "Position in 52W-Spanne bei 3 %, Kapitulations-Index 45/100."
         }
       ]
     },
@@ -245,13 +245,13 @@ window.LIVE_COMPASS_DATA = {
       "name": "Sui",
       "ticker": "SUI20947-USD",
       "profile": "crypto",
-      "price": 0.7081,
+      "price": 0.699,
       "currency": "USD",
-      "rsi": 40,
+      "rsi": 39,
       "scores": {
-        "1w": 15,
-        "1m": 17,
-        "1y": 33,
+        "1w": 16,
+        "1m": 18,
+        "1y": 34,
         "5y": 41
       },
       "regime": "Gegenwind",
@@ -277,22 +277,22 @@ window.LIVE_COMPASS_DATA = {
         {
           "title": "Makro- & Liquiditätsregime",
           "score": 52,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
-          "score": 11,
-          "summary": "30T-Impuls -26.2 %, Abstand zum 200T-Schnitt 0.81x, RSI(14) bei 40."
+          "score": 12,
+          "summary": "30T-Impuls -27.2 %, Abstand zum 200T-Schnitt 0.80x, RSI(14) bei 39."
         },
         {
           "title": "Relative Stärke & Marktbreite",
-          "score": 25,
-          "summary": "4W-Performance vs. BTC -3.5 %, Volumen-Aktivität 0.60x zum 20W-Schnitt."
+          "score": 23,
+          "summary": "4W-Performance vs. BTC -4.7 %, Volumen-Aktivität 0.62x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
           "score": 47,
-          "summary": "Position in 52W-Spanne bei 5 %, Kapitulations-Index 38/100."
+          "summary": "Position in 52W-Spanne bei 4 %, Kapitulations-Index 39/100."
         }
       ]
     },
@@ -301,7 +301,7 @@ window.LIVE_COMPASS_DATA = {
       "name": "Avalanche",
       "ticker": "AVAX-USD",
       "profile": "crypto",
-      "price": 6.967,
+      "price": 6.904,
       "currency": "USD",
       "rsi": 39,
       "scores": {
@@ -332,23 +332,23 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 53,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 52,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
           "score": 24,
-          "summary": "30T-Impuls -23.0 %, Abstand zum 200T-Schnitt 0.84x, RSI(14) bei 39."
+          "summary": "30T-Impuls -23.7 %, Abstand zum 200T-Schnitt 0.83x, RSI(14) bei 39."
         },
         {
           "title": "Relative Stärke & Marktbreite",
           "score": 30,
-          "summary": "4W-Performance vs. BTC +0.7 %, Volumen-Aktivität 0.65x zum 20W-Schnitt."
+          "summary": "4W-Performance vs. BTC -0.1 %, Volumen-Aktivität 0.66x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
           "score": 44,
-          "summary": "Position in 52W-Spanne bei 13 %, Kapitulations-Index 44/100."
+          "summary": "Position in 52W-Spanne bei 13 %, Kapitulations-Index 45/100."
         }
       ]
     },
@@ -429,8 +429,8 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 53,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 52,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
@@ -440,7 +440,7 @@ window.LIVE_COMPASS_DATA = {
         {
           "title": "Wachstums- & Rohstoff-Barometer",
           "score": 60,
-          "summary": "Kupfer/Gold-Trend (13W) +10.0 %, VIX bei 28.4, DXY +2.1 %."
+          "summary": "Kupfer/Gold-Trend (13W) +10.3 %, VIX bei 28.4, DXY +1.9 %."
         },
         {
           "title": "Bewertung & Zyklus-Position",
@@ -485,8 +485,8 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 55,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 54,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
@@ -495,13 +495,13 @@ window.LIVE_COMPASS_DATA = {
         },
         {
           "title": "Wachstums- & Rohstoff-Barometer",
-          "score": 95,
-          "summary": "Kupfer/Gold-Trend (13W) +10.0 %, VIX bei 28.4, DXY +2.1 %."
+          "score": 96,
+          "summary": "Kupfer/Gold-Trend (13W) +10.3 %, VIX bei 28.4, DXY +1.9 %."
         },
         {
           "title": "Bewertung & Zyklus-Position",
           "score": 65,
-          "summary": "Position in 52W-Spanne bei 0 %, Kapitulations-Index 89/100."
+          "summary": "Position in 52W-Spanne bei 0 %, Kapitulations-Index 90/100."
         }
       ]
     },
@@ -541,8 +541,8 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 53,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 52,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
@@ -551,8 +551,8 @@ window.LIVE_COMPASS_DATA = {
         },
         {
           "title": "Wachstums- & Rohstoff-Barometer",
-          "score": 87,
-          "summary": "Kupfer/Gold-Trend (13W) +10.0 %, VIX bei 28.4, DXY +2.1 %."
+          "score": 88,
+          "summary": "Kupfer/Gold-Trend (13W) +10.3 %, VIX bei 28.4, DXY +1.9 %."
         },
         {
           "title": "Bewertung & Zyklus-Position",
@@ -566,9 +566,9 @@ window.LIVE_COMPASS_DATA = {
       "name": "Gold",
       "ticker": "GC=F",
       "profile": "tradfi",
-      "price": 3607.0,
+      "price": 3557.5,
       "currency": "USD",
-      "rsi": 32,
+      "rsi": 31,
       "scores": {
         "1w": 10,
         "1m": 12,
@@ -586,8 +586,8 @@ window.LIVE_COMPASS_DATA = {
           "tone": "bear"
         },
         "rel_vol": {
-          "status": "Neutral",
-          "tone": "neutral"
+          "status": "Stark",
+          "tone": "bull"
         },
         "valuation": {
           "status": "Neutral",
@@ -597,23 +597,23 @@ window.LIVE_COMPASS_DATA = {
       "signals": [
         {
           "title": "Makro- & Liquiditätsregime",
-          "score": 54,
-          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.5 (+1.9 % / 4W)."
+          "score": 53,
+          "summary": "M2-Wachstum +5.7 %, HY-Spreads 3.47 %, USD/JPY 159.2 (+1.7 % / 4W)."
         },
         {
           "title": "Trend- & Strukturqualität",
           "score": 15,
-          "summary": "30T-Impuls -10.0 %, Abstand zum 200T-Schnitt 0.82x, RSI(14) bei 32."
+          "summary": "30T-Impuls -11.2 %, Abstand zum 200T-Schnitt 0.80x, RSI(14) bei 31."
         },
         {
           "title": "Wachstums- & Rohstoff-Barometer",
-          "score": 50,
-          "summary": "Kupfer/Gold-Trend (13W) +10.0 %, VIX bei 28.4, DXY +2.1 %."
+          "score": 71,
+          "summary": "Kupfer/Gold-Trend (13W) +10.3 %, VIX bei 28.4, DXY +1.9 %."
         },
         {
           "title": "Bewertung & Zyklus-Position",
-          "score": 51,
-          "summary": "Position in 52W-Spanne bei 1 %, Kapitulations-Index 36/100."
+          "score": 53,
+          "summary": "Position in 52W-Spanne bei 2 %, Kapitulations-Index 49/100."
         }
       ]
     }
