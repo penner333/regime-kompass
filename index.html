@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multi-Asset Regime & Horizont Kompass · v2.1</title>
+  <title>Multi-Asset Regime & Horizont Kompass · v2.2</title>
   <script src="live_data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
@@ -69,6 +69,24 @@
       padding: 5px 10px;
       border-radius: 999px;
       white-space: nowrap;
+    }
+    .live-pill {
+      font-size: 0.71rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: #94a3b8;
+      padding: 5px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .live-pill.synced {
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.08);
     }
     .btn-action {
       background: var(--accent);
@@ -139,7 +157,6 @@
     }
     .fav-track::-webkit-scrollbar { display: none; }
 
-    /* Dynamic edge fade overlays when overflowing */
     .fav-scroll-wrap::before,
     .fav-scroll-wrap::after {
       content: "";
@@ -663,11 +680,12 @@
 
     <header>
       <div class="brand">
-        <h1>Regime & Horizont Kompass</h1>
-        <div class="sub">Statistischer Markt- & Regel-Monitor · v2.1 Beta</div>
+        <h1>Regime &amp; Horizont Kompass</h1>
+        <div class="sub">Statistischer Markt- &amp; Regel-Monitor · v2.2 (1h Engine + Live-Price-Sync)</div>
       </div>
       <div class="header-actions">
         <span class="status-pill" id="last-updated">Lade Daten...</span>
+        <button class="live-pill" id="live-sync-pill" onclick="syncLivePrices(true)" title="Live-Kurse jetzt neu abrufen">↻ Kurs-Sync...</button>
         <button class="btn-action" onclick="openImportModal()">Depot / CSV</button>
       </div>
     </header>
@@ -932,9 +950,17 @@
     let state = loadState();
     let selectedAsset = "BTC";
     let selectedHorizon = "1m";
+    let livePriceOverrides = {}; // { BTC: { price: 89123.4, source: "Live" }, ... }
 
     function saveState() {
       localStorage.setItem("regime_kompass_v2_1", JSON.stringify(state));
+    }
+
+    function getEffectivePrice(asset) {
+      if (livePriceOverrides[asset.id] && livePriceOverrides[asset.id].price > 0) {
+        return livePriceOverrides[asset.id].price;
+      }
+      return asset.price || 0;
     }
 
     function fmtNum(v, d = 2) {
@@ -946,6 +972,85 @@
       if (!v || v <= 0) return "Kein Kurs";
       return `${fmtNum(v, v < 2 ? 4 : 2)} ${cur}`;
     }
+
+    // --- BROWSER LIVE-PRICE-SYNC (CoinGecko + Yahoo Finance) ---
+    const CG_ID_MAP = {
+      BTC: "bitcoin",
+      ETH: "ethereum",
+      SOL: "solana",
+      ADA: "cardano",
+      SUI: "sui",
+      AVAX: "avalanche-2",
+      NIGHT: "midnight-network"
+    };
+
+    const YF_SYM_MAP = {
+      MSCI: "EUNL.DE",
+      NVDA: "NVDA",
+      "VU.PA": "VU.PA",
+      GOLD: "GC=F"
+    };
+
+    window.syncLivePrices = async function(isManual = false) {
+      if (!window.LIVE_COMPASS_DATA) return;
+      const pill = document.getElementById("live-sync-pill");
+      if (pill && isManual) {
+        pill.textContent = "↻ Lade Live-Kurse...";
+      }
+
+      const assets = window.LIVE_COMPASS_DATA.assets;
+      let updatedCount = 0;
+
+      // 1. CoinGecko Simple Price API (CORS-freundlich, direkt im Browser)
+      try {
+        const cgEntries = Object.entries(CG_ID_MAP).filter(([ticker]) => assets[ticker]);
+        if (cgEntries.length > 0) {
+          const ids = cgEntries.map(([, cgId]) => cgId).join(",");
+          const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd,eur`, { cache: "no-store" });
+          if (res.ok) {
+            const json = await res.json();
+            cgEntries.forEach(([ticker, cgId]) => {
+              const cur = (assets[ticker].currency || "USD").toLowerCase();
+              const val = json[cgId] && json[cgId][cur];
+              if (val && val > 0) {
+                livePriceOverrides[ticker] = { price: Number(val), source: "Live" };
+                updatedCount++;
+              }
+            });
+          }
+        }
+      } catch (e) { /* Fallback auf live_data.js */ }
+
+      // 2. Yahoo Finance Chart API (CORS-frei über query1) für Aktien, ETF & Gold
+      const yfEntries = Object.entries(YF_SYM_MAP).filter(([ticker]) => assets[ticker]);
+      await Promise.all(yfEntries.map(async ([ticker, yfSym]) => {
+        try {
+          const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yfSym)}?interval=1m&range=1d`, { cache: "no-store" });
+          if (res.ok) {
+            const json = await res.json();
+            const meta = json?.chart?.result?.[0]?.meta;
+            const val = meta?.regularMarketPrice;
+            if (val && val > 0) {
+              livePriceOverrides[ticker] = { price: Number(val), source: "Live" };
+              updatedCount++;
+            }
+          }
+        } catch (e) { /* Fallback auf live_data.js */ }
+      }));
+
+      if (pill) {
+        if (updatedCount > 0) {
+          const nowStr = new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+          pill.textContent = `⚡ Live-Kurse ${nowStr}`;
+          pill.classList.add("synced");
+        } else {
+          pill.textContent = "↻ Basis-Kurse aktiv";
+          pill.classList.remove("synced");
+        }
+      }
+
+      renderAll();
+    };
 
     // Legal Gate
     function checkGate() {
@@ -1057,11 +1162,12 @@
       document.getElementById("fav-list").innerHTML = items.map(a => {
         const isFav = state.favorites.includes(a.id);
         const sc = a.scores[selectedHorizon] ?? 50;
+        const effPrice = getEffectivePrice(a);
         return `
           <div class="fav-item">
             <div class="fav-item-info" onclick="pickAssetFromModal('${a.id}')">
               <div class="fav-item-title">${a.id} · ${a.name}</div>
-              <div class="fav-item-sub">${fmtPrice(a.price, a.currency)} · Score ${sc}/100</div>
+              <div class="fav-item-sub">${fmtPrice(effPrice, a.currency)} · Score ${sc}/100</div>
             </div>
             <button class="star-btn ${isFav ? "starred" : ""}" onclick="toggleFavorite('${a.id}')">
               ${isFav ? "★ Aktiv" : "☆ Hinzufügen"}
@@ -1104,7 +1210,7 @@
     function computeSatelliteData(asset) {
       const pos = state.positions[asset.id] || { qty: 0, avgPrice: 0, buyDate: "" };
       const cur = asset.currency;
-      const price = asset.price || 0;
+      const price = getEffectivePrice(asset);
       const dec = price < 2 ? 4 : 2;
       const hasPos = pos.qty > 0 && pos.avgPrice > 0 && price > 0;
       const pnlPct = hasPos ? ((price / pos.avgPrice) - 1.0) * 100.0 : 0;
@@ -1116,7 +1222,7 @@
         main: "Kein Bestand",
         sub: "Watchlist · Tippen",
         rows: [
-          ["Aktueller Referenzkurs", fmtPrice(price, cur)],
+          ["Aktueller Kurs", fmtPrice(price, cur)],
           ["Hinterlegter Bestand", "0 (Watchlist)"],
           ["Status", "Noch keine Position erfasst"]
         ],
@@ -1189,7 +1295,7 @@
           [`Rücksetzer-Zone 2 (${asset.profile === "crypto" ? "-25 %" : "-12 %"})`, `${fmtNum(price * drops[1], dec)} ${cur}`],
           [`Tief-Zone 3 (${asset.profile === "crypto" ? "-35 %" : "-18 %"})`, `${fmtNum(price * drops[2], dec)} ${cur}`]
         ],
-        note: "Statistische Abstandsmarken unter dem aktuellen Referenzkurs zur Orientierung bei Marktrücksetzern."
+        note: "Statistische Abstandsmarken unter dem aktuellen Kurs zur Orientierung bei Marktrücksetzern."
       };
 
       // Sat 4: Haltefrist & Cash
@@ -1228,7 +1334,6 @@
       const assets = DATA.assets;
       const availableIds = Object.keys(assets);
 
-      // Clean favorites list against available live assets
       state.favorites = state.favorites.filter(id => availableIds.includes(id)).slice(0, MAX_FAVORITES);
       if (state.favorites.length === 0) state.favorites = availableIds.slice(0, Math.min(8, MAX_FAVORITES));
       if (!assets[selectedAsset]) selectedAsset = state.favorites[0];
@@ -1237,11 +1342,12 @@
       const hObj = HORIZONS.find(h => h.id === selectedHorizon);
       const score = asset.scores[selectedHorizon] ?? 50;
       const zone = getZoneInfo(score, selectedHorizon);
+      const effPrice = getEffectivePrice(asset);
+      const isLive = Boolean(livePriceOverrides[asset.id]);
 
-      document.getElementById("last-updated").textContent = `${DATA.version} · ${DATA.updated_at}`;
+      document.getElementById("last-updated").textContent = `Engine ${DATA.version} · ${DATA.updated_at}`;
       document.getElementById("fav-count").textContent = `(${state.favorites.length}/${MAX_FAVORITES})`;
 
-      // Build Favorites Ribbon (plus temporary active pill if user picked a non-favorite)
       const ribbonIds = state.favorites.includes(selectedAsset)
         ? state.favorites
         : [selectedAsset, ...state.favorites];
@@ -1257,7 +1363,7 @@
 
       // Hub Center
       document.getElementById("hub-meta").textContent = `${asset.name} (${asset.id}) · Horizont: ${hObj.label}`;
-      document.getElementById("hub-price").textContent = `Referenzkurs: ${fmtPrice(asset.price, asset.currency)}`;
+      document.getElementById("hub-price").textContent = `${isLive ? "Live-Kurs" : "Referenzkurs"}: ${fmtPrice(effPrice, asset.currency)}`;
       const scoreEl = document.getElementById("hub-score");
       scoreEl.textContent = score;
       scoreEl.style.color = zone.color;
@@ -1539,7 +1645,7 @@
 
     // Copy Beta Feedback for WhatsApp/Signal
     window.copyBetaFeedback = function() {
-      const msg = `Beta-Feedback Regime Kompass (v2.1)\nAsset: ${selectedAsset} | Horizont: ${selectedHorizon}\nWas war gut:\nWas war unklar:`;
+      const msg = `Beta-Feedback Regime Kompass (v2.2)\nAsset: ${selectedAsset} | Horizont: ${selectedHorizon}\nWas war gut:\nWas war unklar:`;
       navigator.clipboard.writeText(msg).then(() => {
         const btn = document.getElementById("btn-feedback");
         btn.textContent = "Feedback-Vorlage kopiert ✓";
@@ -1549,6 +1655,8 @@
 
     checkGate();
     renderAll();
+    syncLivePrices(false);
+    setInterval(() => syncLivePrices(false), 60000);
   </script>
 </body>
 </html>
