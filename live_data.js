@@ -1,6 +1,6 @@
 window.LIVE_COMPASS_DATA = {
   "version": "v0.9",
-  "updated_at": "22.11.2026 · 12:42 Uhr",
+  "updated_at": "22.11.2026 · 18:36 Uhr",
   "macro_summary": {
     "m2_yoy": 5.71,
     "hy_spread": 3.52,
@@ -21,7 +21,7 @@ window.LIVE_COMPASS_DATA = {
       "name": "Bitcoin",
       "ticker": "BTC-USD",
       "profile": "crypto",
-      "price": 60545.1,
+      "price": 60595.79,
       "currency": "USD",
       "rsi": 35,
       "scores": {
@@ -58,12 +58,12 @@ window.LIVE_COMPASS_DATA = {
         {
           "title": "Trend- & Strukturqualität",
           "score": 13,
-          "summary": "30T-Impuls -21.6 %, Abstand zum 200T-Schnitt 0.85x, RSI(14) bei 35."
+          "summary": "30T-Impuls -21.5 %, Abstand zum 200T-Schnitt 0.85x, RSI(14) bei 35."
         },
         {
           "title": "Relative Stärke & Marktbreite",
           "score": 30,
-          "summary": "4W-Performance vs. BTC +0.0 %, Volumen-Aktivität 0.49x zum 20W-Schnitt."
+          "summary": "4W-Performance vs. BTC +0.0 %, Volumen-Aktivität 0.45x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
@@ -77,9 +77,9 @@ window.LIVE_COMPASS_DATA = {
       "name": "Ethereum",
       "ticker": "ETH-USD",
       "profile": "crypto",
-      "price": 1701.0,
+      "price": 1711.13,
       "currency": "USD",
-      "rsi": 35,
+      "rsi": 36,
       "scores": {
         "1w": 19,
         "1m": 21,
@@ -114,17 +114,17 @@ window.LIVE_COMPASS_DATA = {
         {
           "title": "Trend- & Strukturqualität",
           "score": 14,
-          "summary": "30T-Impuls -24.1 %, Abstand zum 200T-Schnitt 0.81x, RSI(14) bei 35."
+          "summary": "30T-Impuls -23.6 %, Abstand zum 200T-Schnitt 0.81x, RSI(14) bei 36."
         },
         {
           "title": "Relative Stärke & Marktbreite",
           "score": 19,
-          "summary": "4W-Performance vs. BTC -3.2 %, Volumen-Aktivität 0.35x zum 20W-Schnitt."
+          "summary": "4W-Performance vs. BTC -2.7 %, Volumen-Aktivität 0.33x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
           "score": 51,
-          "summary": "Position in 52W-Spanne bei 10 %, Kapitulations-Index 31/100."
+          "summary": "Position in 52W-Spanne bei 11 %, Kapitulations-Index 31/100."
         }
       ]
     },
@@ -133,7 +133,7 @@ window.LIVE_COMPASS_DATA = {
       "name": "Solana",
       "ticker": "SOL-USD",
       "profile": "crypto",
-      "price": 70.08,
+      "price": 70.22,
       "currency": "USD",
       "rsi": 36,
       "scores": {
@@ -170,12 +170,12 @@ window.LIVE_COMPASS_DATA = {
         {
           "title": "Trend- & Strukturqualität",
           "score": 24,
-          "summary": "30T-Impuls -27.2 %, Abstand zum 200T-Schnitt 0.81x, RSI(14) bei 36."
+          "summary": "30T-Impuls -27.0 %, Abstand zum 200T-Schnitt 0.81x, RSI(14) bei 36."
         },
         {
           "title": "Relative Stärke & Marktbreite",
           "score": 15,
-          "summary": "4W-Performance vs. BTC -7.1 %, Volumen-Aktivität 0.33x zum 20W-Schnitt."
+          "summary": "4W-Performance vs. BTC -7.0 %, Volumen-Aktivität 0.30x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
@@ -189,12 +189,12 @@ window.LIVE_COMPASS_DATA = {
       "name": "Cardano",
       "ticker": "ADA-USD",
       "profile": "crypto",
-      "price": 0.1452,
+      "price": 0.1439,
       "currency": "USD",
-      "rsi": 35,
+      "rsi": 34,
       "scores": {
-        "1w": 23,
-        "1m": 24,
+        "1w": 22,
+        "1m": 23,
         "1y": 37,
         "5y": 43
       },
@@ -226,16 +226,16 @@ window.LIVE_COMPASS_DATA = {
         {
           "title": "Trend- & Strukturqualität",
           "score": 15,
-          "summary": "30T-Impuls -25.6 %, Abstand zum 200T-Schnitt 0.68x, RSI(14) bei 35."
+          "summary": "30T-Impuls -26.3 %, Abstand zum 200T-Schnitt 0.67x, RSI(14) bei 34."
         },
         {
           "title": "Relative Stärke & Marktbreite",
-          "score": 18,
-          "summary": "4W-Performance vs. BTC -5.1 %, Volumen-Aktivität 0.25x zum 20W-Schnitt."
+          "score": 17,
+          "summary": "4W-Performance vs. BTC -6.1 %, Volumen-Aktivität 0.23x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
-          "score": 59,
+          "score": 58,
           "summary": "Position in 52W-Spanne bei 3 %, Kapitulations-Index 44/100."
         }
       ]
@@ -245,7 +245,7 @@ window.LIVE_COMPASS_DATA = {
       "name": "Sui",
       "ticker": "SUI20947-USD",
       "profile": "crypto",
-      "price": 0.6569,
+      "price": 0.656,
       "currency": "USD",
       "rsi": 38,
       "scores": {
@@ -282,12 +282,12 @@ window.LIVE_COMPASS_DATA = {
         {
           "title": "Trend- & Strukturqualität",
           "score": 16,
-          "summary": "30T-Impuls -27.4 %, Abstand zum 200T-Schnitt 0.76x, RSI(14) bei 38."
+          "summary": "30T-Impuls -27.5 %, Abstand zum 200T-Schnitt 0.76x, RSI(14) bei 38."
         },
         {
           "title": "Relative Stärke & Marktbreite",
-          "score": 25,
-          "summary": "4W-Performance vs. BTC -7.5 %, Volumen-Aktivität 0.20x zum 20W-Schnitt."
+          "score": 24,
+          "summary": "4W-Performance vs. BTC -7.7 %, Volumen-Aktivität 0.19x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
@@ -301,7 +301,7 @@ window.LIVE_COMPASS_DATA = {
       "name": "Avalanche",
       "ticker": "AVAX-USD",
       "profile": "crypto",
-      "price": 6.667,
+      "price": 6.661,
       "currency": "USD",
       "rsi": 38,
       "scores": {
@@ -338,17 +338,17 @@ window.LIVE_COMPASS_DATA = {
         {
           "title": "Trend- & Strukturqualität",
           "score": 14,
-          "summary": "30T-Impuls -21.9 %, Abstand zum 200T-Schnitt 0.81x, RSI(14) bei 38."
+          "summary": "30T-Impuls -22.0 %, Abstand zum 200T-Schnitt 0.81x, RSI(14) bei 38."
         },
         {
           "title": "Relative Stärke & Marktbreite",
           "score": 31,
-          "summary": "4W-Performance vs. BTC -0.5 %, Volumen-Aktivität 0.17x zum 20W-Schnitt."
+          "summary": "4W-Performance vs. BTC -0.6 %, Volumen-Aktivität 0.17x zum 20W-Schnitt."
         },
         {
           "title": "Bewertung & Zyklus-Position",
           "score": 53,
-          "summary": "Position in 52W-Spanne bei 11 %, Kapitulations-Index 45/100."
+          "summary": "Position in 52W-Spanne bei 10 %, Kapitulations-Index 45/100."
         }
       ]
     },
